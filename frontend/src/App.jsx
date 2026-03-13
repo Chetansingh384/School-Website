@@ -28,6 +28,7 @@ import ManagePrincipalMessage from './admin/ManagePrincipalMessage';
 import ManageFees from './admin/ManageFees';
 import ManagePrograms from './admin/ManagePrograms';
 import ManageFaculty from './admin/ManageFaculty';
+import ManageBooks from './admin/ManageBooks';
 
 function App() {
   return (
