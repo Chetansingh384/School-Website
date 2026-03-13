@@ -4,7 +4,7 @@ import principalImg from '../assets/principal2.png';
 
 const PrincipalMessage = () => {
   return (
-    <div className="bg-gray-900 min-h-screen pt-20 pb-20 overflow-hidden relative">
+    <div className="bg-blue-900 dark:bg-slate-950 min-h-screen pt-20 pb-20 overflow-hidden relative transition-colors duration-300">
       
       {/* Abstract Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">

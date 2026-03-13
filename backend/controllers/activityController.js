@@ -1,11 +1,25 @@
-const Activity = require('../models/Activity');
+const admin = require('../config/firebase');
+const cloudinary = require('../config/cloudinary');
+const streamifier = require('streamifier');
+
+const getDb = () => {
+  if (admin.apps.length > 0) {
+    return admin.firestore();
+  }
+  throw new Error("Firebase Admin SDK not initialized");
+};
 
 // @desc    Get all activities
 // @route   GET /api/activities
 // @access  Public
 const getActivities = async (req, res) => {
   try {
-    const activities = await Activity.find().sort({ createdAt: -1 });
+    const db = getDb();
+    const snapshot = await db.collection('activities').orderBy('createdAt', 'desc').get();
+    const activities = [];
+    snapshot.forEach(doc => {
+      activities.push({ _id: doc.id, ...doc.data() });
+    });
     res.json(activities);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -19,18 +33,44 @@ const addActivity = async (req, res) => {
   try {
     const { title, description } = req.body;
     let imageUrl = '';
+    let publicId = '';
 
     if (req.file) {
-      imageUrl = `/uploads/${req.file.filename}`;
+      const streamUpload = (req) => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { 
+              folder: 'school_activities',
+              upload_preset: 'School Website' 
+            },
+            (error, result) => {
+              if (result) {
+                resolve(result);
+              } else {
+                reject(error);
+              }
+            }
+          );
+          streamifier.createReadStream(req.file.buffer).pipe(stream);
+        });
+      };
+      
+      const result = await streamUpload(req);
+      imageUrl = result.secure_url;
+      publicId = result.public_id;
     }
 
-    const newActivity = await Activity.create({
+    const db = getDb();
+    const docRef = await db.collection('activities').add({
       title,
       description,
-      imageUrl
+      imageUrl,
+      publicId,
+      createdAt: admin.firestore.FieldValue.serverTimestamp()
     });
 
-    res.status(201).json(newActivity);
+    const docSnapshot = await docRef.get();
+    res.status(201).json({ _id: docSnapshot.id, ...docSnapshot.data() });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -41,25 +81,58 @@ const addActivity = async (req, res) => {
 // @access  Private
 const updateActivity = async (req, res) => {
   try {
-    const activity = await Activity.findById(req.params.id);
+    const { id } = req.params;
+    const db = getDb();
+    const activityRef = db.collection('activities').doc(id);
+    const doc = await activityRef.get();
 
-    if (!activity) {
+    if (!doc.exists) {
       return res.status(404).json({ message: 'Activity not found' });
     }
 
     const { title, description } = req.body;
-    let imageUrl = activity.imageUrl;
+    let imageUrl = doc.data().imageUrl;
+    let publicId = doc.data().publicId || '';
 
     if (req.file) {
-      imageUrl = `/uploads/${req.file.filename}`;
+      if (publicId) {
+        await cloudinary.uploader.destroy(publicId);
+      }
+
+      const streamUpload = (req) => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { 
+              folder: 'school_activities',
+              upload_preset: 'School Website' 
+            },
+            (error, result) => {
+              if (result) {
+                resolve(result);
+              } else {
+                reject(error);
+              }
+            }
+          );
+          streamifier.createReadStream(req.file.buffer).pipe(stream);
+        });
+      };
+      
+      const result = await streamUpload(req);
+      imageUrl = result.secure_url;
+      publicId = result.public_id;
     }
 
-    activity.title = title || activity.title;
-    activity.description = description || activity.description;
-    activity.imageUrl = imageUrl;
+    await activityRef.update({
+      title: title || doc.data().title,
+      description: description || doc.data().description,
+      imageUrl,
+      publicId,
+      updatedAt: admin.firestore.FieldValue.serverTimestamp()
+    });
 
-    const updatedActivity = await activity.save();
-    res.json(updatedActivity);
+    const updatedDoc = await activityRef.get();
+    res.json({ _id: updatedDoc.id, ...updatedDoc.data() });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -70,13 +143,20 @@ const updateActivity = async (req, res) => {
 // @access  Private
 const deleteActivity = async (req, res) => {
   try {
-    const activity = await Activity.findById(req.params.id);
+    const { id } = req.params;
+    const db = getDb();
+    const activityRef = db.collection('activities').doc(id);
+    const doc = await activityRef.get();
 
-    if (!activity) {
+    if (!doc.exists) {
       return res.status(404).json({ message: 'Activity not found' });
     }
 
-    await activity.deleteOne();
+    if (doc.data().publicId) {
+      await cloudinary.uploader.destroy(doc.data().publicId);
+    }
+
+    await activityRef.delete();
     res.json({ message: 'Activity removed' });
   } catch (error) {
     res.status(500).json({ message: error.message });

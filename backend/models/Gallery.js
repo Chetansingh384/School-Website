@@ -5,10 +5,18 @@ const gallerySchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  publicId: {
+    type: String,
+    required: true
+  },
+  mediaType: {
+    type: String,
+    enum: ['image', 'video'],
+    default: 'image'
+  },
   category: {
     type: String,
-    required: true,
-    enum: ['Sports', 'Events', 'Class Activities', 'Annual Day', 'Other']
+    required: true
   },
   description: {
     type: String

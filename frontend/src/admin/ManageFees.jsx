@@ -12,7 +12,8 @@ const ManageFees = () => {
   const [formData, setFormData] = useState({
     className: '',
     fee2425: '',
-    fee2526: ''
+    fee2526: '',
+    order: ''
   });
   const [saving, setSaving] = useState(false);
 
@@ -62,7 +63,8 @@ const ManageFees = () => {
     setFormData({
       className: fee.className,
       fee2425: fee.fee2425,
-      fee2526: fee.fee2526
+      fee2526: fee.fee2526,
+      order: fee.order || ''
     });
   };
 
@@ -81,7 +83,7 @@ const ManageFees = () => {
   const resetForm = () => {
     setIsEditing(false);
     setCurrentId(null);
-    setFormData({ className: '', fee2425: '', fee2526: '' });
+    setFormData({ className: '', fee2425: '', fee2526: '', order: '' });
   };
 
   return (
@@ -140,6 +142,17 @@ const ManageFees = () => {
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-green-500 focus:border-green-500"
               placeholder="0"
+            />
+          </div>
+          <div className="md:col-span-1">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Sort Order</label>
+            <input 
+              type="number" 
+              name="order"
+              value={formData.order}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-green-500 focus:border-green-500"
+              placeholder="e.g. 1"
             />
           </div>
           <div className="md:col-span-1">

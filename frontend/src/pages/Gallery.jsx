@@ -1,30 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FaImages, FaTimes, FaFilter, FaSearchPlus } from 'react-icons/fa';
+import api from '../services/api';
 
 const Gallery = () => {
-  const imagesData = [
-    { _id: '1', category: 'Campus Life', imageUrl: new URL('../assets/campus1.jpeg', import.meta.url).href, description: 'Campus View' },
-    { _id: '2', category: 'Campus Life', imageUrl: new URL('../assets/campus3.jpeg', import.meta.url).href, description: 'Campus View' },
-    { _id: '3', category: 'Campus Life', imageUrl: new URL('../assets/campus4.jpeg', import.meta.url).href, description: 'Campus View' },
-    { _id: '4', category: 'Campus Life', imageUrl: new URL('../assets/campus5.jpeg', import.meta.url).href, description: 'Campus View' },
-    { _id: '5', category: 'Campus Life', imageUrl: new URL('../assets/campus6.jpeg', import.meta.url).href, description: 'Campus View' },
-    { _id: '6', category: 'Academics', imageUrl: new URL('../assets/campus7.jpeg', import.meta.url).href, description: 'Academics' },
-    { _id: '7', category: 'Academics', imageUrl: new URL('../assets/campus8.jpeg', import.meta.url).href, description: 'Academics' },
-    { _id: '8', category: 'Academics', imageUrl: new URL('../assets/campus9.jpeg', import.meta.url).href, description: 'Academics' },
-    { _id: '9', category: 'Academics', imageUrl: new URL('../assets/campus10.jpeg', import.meta.url).href, description: 'Academics' },
-    { _id: '10', category: 'Academics', imageUrl: new URL('../assets/campus12.jpeg', import.meta.url).href, description: 'Academics' },
-    { _id: '11', category: 'Infrastructure', imageUrl: new URL('../assets/campus13.jpeg', import.meta.url).href, description: 'Infrastructure' },
-    { _id: '12', category: 'Infrastructure', imageUrl: new URL('../assets/campus14.jpeg', import.meta.url).href, description: 'Infrastructure' },
-    { _id: '13', category: 'Infrastructure', imageUrl: new URL('../assets/campus15.jpeg', import.meta.url).href, description: 'Infrastructure' },
-    { _id: '14', category: 'Infrastructure', imageUrl: new URL('../assets/campus16.jpeg', import.meta.url).href, description: 'Infrastructure' },
-    { _id: '15', category: 'Infrastructure', imageUrl: new URL('../assets/campus17.jpeg', import.meta.url).href, description: 'Infrastructure' },
-    { _id: '16', category: 'Events', imageUrl: new URL('../assets/campus18.jpeg', import.meta.url).href, description: 'Events' },
-    { _id: '17', category: 'Events', imageUrl: new URL('../assets/campus19.jpeg', import.meta.url).href, description: 'Events' },
-    { _id: '18', category: 'Events', imageUrl: new URL('../assets/campus20.jpeg', import.meta.url).href, description: 'Events' },
-    { _id: '19', category: 'Events', imageUrl: new URL('../assets/campus21.jpeg', import.meta.url).href, description: 'Events' },
-    { _id: '20', category: 'Events', imageUrl: new URL('../assets/campus22.jpeg', import.meta.url).href, description: 'Events' }
-  ];
-
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('All');
@@ -32,15 +10,23 @@ const Gallery = () => {
   const [fullscreenImage, setFullscreenImage] = useState(null);
 
   useEffect(() => {
-    // Simulate API fetch to keep loading animation that the user likes
+    const fetchGallery = async () => {
+      try {
+        const { data } = await api.get('/gallery');
+        setImages(data);
+        const uniqueCategories = ['All', ...new Set(data.map(img => img.category))];
+        setCategories(uniqueCategories);
+      } catch (error) {
+        console.error("Error fetching gallery", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Simulate slight delay to keep the nice loading animation
     setTimeout(() => {
-      setImages(imagesData);
-      
-      const uniqueCategories = ['All', ...new Set(imagesData.map(img => img.category))];
-      setCategories(uniqueCategories);
-      
-      setLoading(false);
-    }, 800);
+      fetchGallery();
+    }, 500);
   }, []);
 
   const filteredImages = filter === 'All' 
@@ -48,7 +34,7 @@ const Gallery = () => {
     : images.filter(img => img.category === filter);
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 dark:bg-slate-900 min-h-screen transition-colors duration-300">
 
       {/* Header */}
       <div className="relative pt-32 pb-24 overflow-hidden bg-blue-950 border-b-8 border-indigo-500">
@@ -72,7 +58,7 @@ const Gallery = () => {
         
         {/* Filter Bar */}
         {!loading && images.length > 0 && (
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-16 bg-white p-4 rounded-full shadow-lg border border-gray-100 max-w-4xl mx-auto animate-fade-in-up">
+          <div className="flex flex-wrap items-center justify-center gap-4 mb-16 bg-white dark:bg-slate-800 p-4 rounded-full shadow-lg border border-gray-100 dark:border-slate-700 max-w-4xl mx-auto animate-fade-in-up">
             <FaFilter className="text-gray-400 mr-2 hidden sm:block" />
             {categories.map((cat, index) => (
               <button 
@@ -100,15 +86,26 @@ const Gallery = () => {
             {filteredImages.map((image, i) => (
               <div 
                 key={image._id} 
-                className="break-inside-avoid relative group rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer bg-white"
-                onClick={() => setFullscreenImage(image.imageUrl)}
+                className="break-inside-avoid relative group rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer bg-white dark:bg-slate-800"
+                onClick={() => setFullscreenImage(image)}
               >
-                <img 
-                  src={image.imageUrl} 
-                  alt={image.description || image.category} 
-                  className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700"
-                  onError={(e) => {e.target.onerror = null; e.target.src="https://via.placeholder.com/400x300?text=Gallery+Item"}}
-                />
+                {image.mediaType === 'video' ? (
+                  <video 
+                    src={image.imageUrl} 
+                    className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700"
+                    muted
+                    loop
+                    onMouseEnter={(e) => e.target.play()}
+                    onMouseLeave={(e) => e.target.pause()}
+                  />
+                ) : (
+                  <img 
+                    src={image.imageUrl} 
+                    alt={image.description || image.category} 
+                    className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700"
+                    onError={(e) => {e.target.onerror = null; e.target.src="https://via.placeholder.com/400x300?text=Gallery+Item"}}
+                  />
+                )}
                 
                 {/* Image Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-6">
@@ -132,10 +129,10 @@ const Gallery = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-gray-300">
-            <FaImages className="text-6xl text-gray-300 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-gray-700 mb-2">No Images Found</h3>
-            <p className="text-gray-500">There are no images available in this category.</p>
+          <div className="text-center py-20 bg-white dark:bg-slate-800 rounded-3xl border border-dashed border-gray-300 dark:border-slate-700">
+            <FaImages className="text-6xl text-gray-300 dark:text-slate-600 mx-auto mb-4" />
+            <h3 className="text-2xl font-bold text-gray-700 dark:text-white mb-2">No Images Found</h3>
+            <p className="text-gray-500 dark:text-gray-400">There are no images available in this category.</p>
           </div>
         )}
       </div>
@@ -150,11 +147,20 @@ const Gallery = () => {
             <FaTimes size={30} />
           </button>
           
-          <img 
-            src={fullscreenImage} 
-            alt="Fullscreen View" 
-            className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.5)] transform scale-95 animate-[scaleIn_0.3s_ease-out_forwards]"
-          />
+          {fullscreenImage.mediaType === 'video' ? (
+            <video 
+              src={fullscreenImage.imageUrl} 
+              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.5)] transform scale-95 animate-[scaleIn_0.3s_ease-out_forwards]"
+              controls
+              autoPlay
+            />
+          ) : (
+            <img 
+              src={fullscreenImage.imageUrl} 
+              alt="Fullscreen View" 
+              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.5)] transform scale-95 animate-[scaleIn_0.3s_ease-out_forwards]"
+            />
+          )}
         </div>
       )}
       

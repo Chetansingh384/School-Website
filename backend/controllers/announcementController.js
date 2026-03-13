@@ -1,11 +1,23 @@
-const Announcement = require('../models/Announcement');
+const admin = require('../config/firebase');
+
+const getDb = () => {
+  if (admin.apps.length > 0) {
+    return admin.firestore();
+  }
+  throw new Error("Firebase Admin SDK not initialized");
+};
 
 // @desc    Get all announcements
 // @route   GET /api/announcements
 // @access  Public
 const getAnnouncements = async (req, res) => {
   try {
-    const announcements = await Announcement.find().sort({ createdAt: -1 });
+    const db = getDb();
+    const snapshot = await db.collection('announcements').orderBy('createdAt', 'desc').get();
+    const announcements = [];
+    snapshot.forEach(doc => {
+      announcements.push({ _id: doc.id, ...doc.data() });
+    });
     res.json(announcements);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -19,12 +31,15 @@ const addAnnouncement = async (req, res) => {
   try {
     const { title, content } = req.body;
 
-    const newAnnouncement = await Announcement.create({
+    const db = getDb();
+    const docRef = await db.collection('announcements').add({
       title,
-      content
+      content,
+      createdAt: admin.firestore.FieldValue.serverTimestamp()
     });
 
-    res.status(201).json(newAnnouncement);
+    const docSnapshot = await docRef.get();
+    res.status(201).json({ _id: docSnapshot.id, ...docSnapshot.data() });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -35,13 +50,16 @@ const addAnnouncement = async (req, res) => {
 // @access  Private
 const deleteAnnouncement = async (req, res) => {
   try {
-    const announcement = await Announcement.findById(req.params.id);
+    const { id } = req.params;
+    const db = getDb();
+    const announcementRef = db.collection('announcements').doc(id);
+    const doc = await announcementRef.get();
 
-    if (!announcement) {
+    if (!doc.exists) {
       return res.status(404).json({ message: 'Announcement not found' });
     }
 
-    await announcement.deleteOne();
+    await announcementRef.delete();
     res.json({ message: 'Announcement removed' });
   } catch (error) {
     res.status(500).json({ message: error.message });

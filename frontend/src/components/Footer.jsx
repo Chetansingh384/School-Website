@@ -1,8 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaGraduationCap } from 'react-icons/fa';
 
 const Footer = () => {
+  const location = useLocation();
+
+  if (location.pathname.startsWith('/admin')) {
+    return null;
+  }
+
   return (
     <footer className="bg-gray-950 text-gray-300 pt-20 pb-10 border-t-8 border-blue-600 relative overflow-hidden">
       {/* Decorative gradient blob */}

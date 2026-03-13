@@ -63,7 +63,7 @@ const Activities = () => {
                 <div className="absolute inset-0">
                   {activity.imageUrl ? (
                     <img 
-                      src={`http://localhost:5000${activity.imageUrl}`} 
+                      src={activity.imageUrl} 
                       alt={activity.title} 
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       onError={(e) => {e.target.onerror = null; e.target.src="https://via.placeholder.com/600x800?text=Activity"}}

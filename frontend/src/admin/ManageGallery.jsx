@@ -83,10 +83,10 @@ const ManageGallery = () => {
         </h2>
         <form onSubmit={handleUpload} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
           <div className="col-span-1 md:col-span-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Image File</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Media File</label>
             <input 
               type="file" 
-              accept="image/*"
+              accept="image/*,video/*"
               onChange={(e) => setFile(e.target.files[0])}
               className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               required
@@ -134,12 +134,21 @@ const ManageGallery = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {images.map(img => (
             <div key={img._id} className="relative group rounded-lg overflow-hidden border border-gray-200">
-              <img 
-                src={`http://localhost:5000${img.imageUrl}`} 
-                alt="gallery" 
-                className="w-full h-32 object-cover"
-                onError={(e) => {e.target.onerror = null; e.target.src="https://via.placeholder.com/150"}}
-              />
+              {img.mediaType === 'video' ? (
+                <video 
+                  src={img.imageUrl} 
+                  className="w-full h-32 object-cover"
+                  muted
+                  preload="metadata"
+                />
+              ) : (
+                <img 
+                  src={img.imageUrl} 
+                  alt={img.description || 'gallery'} 
+                  className="w-full h-32 object-cover"
+                  onError={(e) => {e.target.onerror = null; e.target.src="https://via.placeholder.com/150"}}
+                />
+              )}
               <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
                 <button 
                   onClick={() => handleDelete(img._id)}

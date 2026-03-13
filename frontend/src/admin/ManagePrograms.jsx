@@ -165,7 +165,7 @@ const ManagePrograms = () => {
             <div key={program._id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col hover:shadow-md transition bg-gray-50">
               <div className="relative h-40">
                 {program.imageUrl ? (
-                  <img src={`http://localhost:5000${program.imageUrl}`} alt={program.title} className="w-full h-full object-cover" />
+                  <img src={program.imageUrl} alt={program.title} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">No Image</div>
                 )}

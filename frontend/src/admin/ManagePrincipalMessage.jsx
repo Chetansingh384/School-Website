@@ -81,7 +81,7 @@ const ManagePrincipalMessage = () => {
               <p className="text-sm font-semibold text-gray-700 mb-3 w-full">Current Photo</p>
               {currentImage ? (
                 <img 
-                  src={`http://localhost:5000${currentImage}`} 
+                  src={currentImage} 
                   alt="Principal" 
                   className="w-48 h-48 object-cover rounded-full border-4 border-gray-200 mb-4 shadow-md"
                   onError={(e) => {e.target.onerror = null; e.target.src="https://via.placeholder.com/200?text=Photo"}}

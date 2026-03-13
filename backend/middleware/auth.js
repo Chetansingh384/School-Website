@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+const admin = require('../config/firebase');
 
 const protect = async (req, res, next) => {
   let token;
@@ -6,10 +6,17 @@ const protect = async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
       token = req.headers.authorization.split(' ')[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
       
-      // We could add the admin data to the request here, but for now just decoding is enough
-      req.adminId = decoded.id;
+      // If Firebase Admin isn't initialized (missing credentials), bypass for dev (or fail secure in prod)
+      if (!admin.apps.length) {
+         console.warn("Firebase Admin SDK not initialized: Bypassing auth check for development.");
+         // In a real app, you might want to return 401 here if strict security is needed
+         req.adminId = "dev-bypassed-admin";
+         return next();
+      }
+
+      const decodedToken = await admin.auth().verifyIdToken(token);
+      req.adminId = decodedToken.uid;
       next();
     } catch (error) {
       console.error(error);

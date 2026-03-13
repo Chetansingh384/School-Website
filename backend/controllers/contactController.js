@@ -1,12 +1,27 @@
-const Contact = require('../models/Contact');
+const admin = require('../config/firebase');
+
+const getDb = () => {
+  if (admin.apps.length > 0) {
+    return admin.firestore();
+  }
+  throw new Error("Firebase Admin SDK not initialized");
+};
 
 // @desc    Get contact info
 // @route   GET /api/contacts
 // @access  Public
 const getContactInfo = async (req, res) => {
   try {
-    const contact = await Contact.findOne();
-    res.json(contact || {});
+    const db = getDb();
+    // Use a single document ID for site contact info
+    const contactRef = db.collection('settings').doc('contactInfo');
+    const doc = await contactRef.get();
+    
+    if (doc.exists) {
+      res.json(doc.data());
+    } else {
+      res.json({});
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -18,19 +33,26 @@ const getContactInfo = async (req, res) => {
 const updateContactInfo = async (req, res) => {
   try {
     const { address, phone, email, googleMapUrl } = req.body;
-    let contact = await Contact.findOne();
+    const db = getDb();
+    const contactRef = db.collection('settings').doc('contactInfo');
+    const doc = await contactRef.get();
 
-    if (!contact) {
-      contact = new Contact({ address, phone, email, googleMapUrl });
+    const updateData = {};
+    if (address !== undefined) updateData.address = address;
+    if (phone !== undefined) updateData.phone = phone;
+    if (email !== undefined) updateData.email = email;
+    if (googleMapUrl !== undefined) updateData.googleMapUrl = googleMapUrl;
+
+    if (!doc.exists) {
+      updateData.createdAt = admin.firestore.FieldValue.serverTimestamp();
+      await contactRef.set(updateData);
     } else {
-      contact.address = address || contact.address;
-      contact.phone = phone || contact.phone;
-      contact.email = email || contact.email;
-      contact.googleMapUrl = googleMapUrl !== undefined ? googleMapUrl : contact.googleMapUrl;
+      updateData.updatedAt = admin.firestore.FieldValue.serverTimestamp();
+      await contactRef.update(updateData);
     }
 
-    const updatedContact = await contact.save();
-    res.json(updatedContact);
+    const updatedDoc = await contactRef.get();
+    res.json(updatedDoc.data());
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

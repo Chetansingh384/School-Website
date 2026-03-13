@@ -146,7 +146,7 @@ const ManageActivities = () => {
                 <tr key={activity._id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     {activity.imageUrl ? (
-                      <img src={`http://localhost:5000${activity.imageUrl}`} alt="" className="h-10 w-10 rounded-lg object-cover" />
+                      <img src={activity.imageUrl} alt="" className="h-10 w-10 rounded-lg object-cover" />
                     ) : (
                       <div className="h-10 w-10 rounded-lg bg-gray-200 flex items-center justify-center text-gray-500 text-xs">N/A</div>
                     )}
