@@ -30,6 +30,7 @@ const Navbar = () => {
     { title: 'About', path: '/about' },
     { title: 'Programs', path: '/programs' },
     { title: 'Fees', path: '/fees' },
+    { title: 'Course Detail', path: '/course-detail' },
     { title: 'Gallery', path: '/gallery' },
     { title: 'Faculty', path: '/faculty' },
     { title: 'Contact', path: '/contact' },
@@ -129,7 +130,7 @@ const Navbar = () => {
                   <Link 
                     onClick={closeNav} 
                     to={link.path}
-                    className={`block py-3 text-3xl font-bold tracking-tight ${
+                    className={`block py-3 text-xl font-bold tracking-tight ${
                       isActive ? 'text-blue-400' : 'text-white/80 hover:text-white'
                     }`}
                   >

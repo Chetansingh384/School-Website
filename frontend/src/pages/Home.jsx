@@ -42,7 +42,7 @@ const Home = () => {
             </span>
           </div>
           
-          <h1 className="text-6xl md:text-8xl font-black text-white mb-6 leading-tight tracking-tighter drop-shadow-2xl">
+          <h1 className="text-4xl md:text-8xl font-black text-white mb-6 leading-tight tracking-tighter drop-shadow-2xl">
             Empower Your <br/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-300 to-yellow-500 animate-pulse">
               Brilliant Future

@@ -16,6 +16,7 @@ import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
 import Scholarships from './pages/Scholarships';
 import Faculty from './pages/Faculty';
+import CourseDetail from './pages/CourseDetail';
 
 import AdminLogin from './admin/AdminLogin';
 import AdminLayout from './admin/AdminLayout';
@@ -44,6 +45,7 @@ function App() {
               <Route path="/scholarships" element={<Scholarships />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/faculty" element={<Faculty />} />
+              <Route path="/course-detail" element={<CourseDetail />} />
               <Route path="/contact" element={<Contact />} />
 
               {/* Admin Routes */}
@@ -57,6 +59,7 @@ function App() {
                 <Route path="fees" element={<ManageFees />} />
                 <Route path="programs" element={<ManagePrograms />} />
                 <Route path="faculty" element={<ManageFaculty />} />
+                <Route path="books" element={<ManageBooks />} />
               </Route>
             </Routes>
           </main>
