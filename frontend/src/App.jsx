@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from './context/ThemeContext';
 
 // Layout
 import Navbar from './components/Navbar';
@@ -25,40 +26,44 @@ import ManageAnnouncements from './admin/ManageAnnouncements';
 import ManagePrincipalMessage from './admin/ManagePrincipalMessage';
 import ManageFees from './admin/ManageFees';
 import ManagePrograms from './admin/ManagePrograms';
+import ManageFaculty from './admin/ManageFaculty';
 
 function App() {
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/principal" element={<PrincipalMessage />} />
-            <Route path="/programs" element={<Programs />} />
-            <Route path="/fees" element={<FeeStructure />} />
-            <Route path="/scholarships" element={<Scholarships />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/faculty" element={<Faculty />} />
-            <Route path="/contact" element={<Contact />} />
+    <ThemeProvider>
+      <Router>
+        <div className="flex flex-col min-h-screen">
+          <Navbar />
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/principal" element={<PrincipalMessage />} />
+              <Route path="/programs" element={<Programs />} />
+              <Route path="/fees" element={<FeeStructure />} />
+              <Route path="/scholarships" element={<Scholarships />} />
+              <Route path="/gallery" element={<Gallery />} />
+              <Route path="/faculty" element={<Faculty />} />
+              <Route path="/contact" element={<Contact />} />
 
-            {/* Admin Routes */}
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="gallery" element={<ManageGallery />} />
-              <Route path="activities" element={<ManageActivities />} />
-              <Route path="announcements" element={<ManageAnnouncements />} />
-              <Route path="principal-message" element={<ManagePrincipalMessage />} />
-              <Route path="fees" element={<ManageFees />} />
-              <Route path="programs" element={<ManagePrograms />} />
-            </Route>
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<Dashboard />} />
+                <Route path="gallery" element={<ManageGallery />} />
+                <Route path="activities" element={<ManageActivities />} />
+                <Route path="announcements" element={<ManageAnnouncements />} />
+                <Route path="principal-message" element={<ManagePrincipalMessage />} />
+                <Route path="fees" element={<ManageFees />} />
+                <Route path="programs" element={<ManagePrograms />} />
+                <Route path="faculty" element={<ManageFaculty />} />
+              </Route>
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </Router>
+    </ThemeProvider>
   );
 }
 

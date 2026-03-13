@@ -6,10 +6,13 @@ import campus3 from '../assets/campus3.jpeg';
 import campus4 from '../assets/campus4.jpeg';
 import campus5 from '../assets/campus5.jpeg';
 import campusvid from '../assets/campusvid.mp4';
+import api from '../services/api';
 
-const heroImages = [aboutImg, campus1, campus3, campus4, campus5];
+const fallbackImages = [aboutImg, campus1, campus3, campus4, campus5];
 
 const About = () => {
+  const [heroImages, setHeroImages] = useState(fallbackImages);
+  const [heroVideo, setHeroVideo] = useState(campusvid);
   const [currentImage, setCurrentImage] = useState(0);
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -26,16 +29,34 @@ const About = () => {
   };
 
   useEffect(() => {
+    const fetchMedia = async () => {
+      try {
+        const { data } = await api.get('/gallery');
+        const liveImages = data.filter(item => item.mediaType !== 'video').map(item => item.imageUrl);
+        const liveVideos = data.filter(item => item.mediaType === 'video');
+
+        if (liveImages.length > 0) {
+          setHeroImages(liveImages.slice(0, 5));
+        }
+        if (liveVideos.length > 0) {
+          setHeroVideo(liveVideos[0].imageUrl);
+        }
+      } catch (error) {
+        console.error("Error fetching live media", error);
+      }
+    };
+    fetchMedia();
+
     const timer = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % heroImages.length);
     }, 4000);
     return () => clearInterval(timer);
-  }, []);
+  }, [heroImages.length]);
   return (
-    <div className="bg-gray-50 min-h-screen overflow-hidden">
+    <div className="bg-gray-50 dark:bg-slate-900 min-h-screen overflow-hidden transition-colors duration-300">
       
       {/* Hero Header */}
-      <div className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 bg-blue-900 overflow-hidden">
+      <div className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 bg-blue-950 overflow-hidden">
         <div className="absolute inset-0 z-0 bg-blue-900">
           {heroImages.map((img, index) => (
             <img 
@@ -64,27 +85,27 @@ const About = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-20">
         <div className="grid md:grid-cols-2 gap-8">
           
-          <div className="bg-white rounded-3xl p-10 shadow-2xl border border-gray-100 transform hover:-translate-y-2 transition-transform duration-500 group relative overflow-hidden">
+          <div className="bg-white dark:bg-slate-800 dark:border-slate-700 rounded-3xl p-10 shadow-2xl border border-gray-100 transform hover:-translate-y-2 transition-transform duration-500 group relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-700"></div>
             <div className="relative z-10">
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center mb-8 shadow-lg">
                 <FaEye className="text-3xl" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Vision</h2>
-              <p className="text-gray-600 leading-relaxed text-lg">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Our Vision</h2>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
                 Kalidas Children High School is a premier educational school dedicated to fostering academic excellence, holistic development, and a love for learning in every student. Established with the vision of nurturing young minds and shaping future leaders, the school offers a stimulating and supportive environment that encourages curiosity, creativity, and critical thinking.
               </p>
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-10 shadow-2xl border border-gray-100 transform hover:-translate-y-2 transition-transform duration-500 group relative overflow-hidden">
+          <div className="bg-white dark:bg-slate-800 dark:border-slate-700 rounded-3xl p-10 shadow-2xl border border-gray-100 transform hover:-translate-y-2 transition-transform duration-500 group relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-700"></div>
             <div className="relative z-10">
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center mb-8 shadow-lg">
                 <FaCheckCircle className="text-3xl" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Mission</h2>
-              <p className="text-gray-600 leading-relaxed text-lg">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Our Mission</h2>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
                 Committed to the all-round development of its students, the school promotes a variety of co-curricular activities such as sports, arts, music, and community service. Kalidas Children High School is dedicated to creating a vibrant learning community where students are inspired to excel and contribute positively to society.
               </p>
             </div>
@@ -105,7 +126,7 @@ const About = () => {
             >
               <video 
                 ref={videoRef}
-                src={campusvid}
+                src={heroVideo}
                 autoPlay 
                 loop 
                 muted 
@@ -123,12 +144,12 @@ const About = () => {
           <div className="lg:w-1/2 space-y-8">
             <div>
               <h3 className="text-blue-600 font-bold tracking-widest uppercase text-sm mb-2">Our Heritage & Facilities</h3>
-              <h2 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tight leading-tight">
+              <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight leading-tight">
                 State of the Art <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Infrastructure</span>
               </h2>
             </div>
             
-            <p className="text-lg text-gray-600 leading-relaxed">
+            <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
               The school prides itself on its state-of-the-art facilities, including well-equipped classrooms, modern laboratories, a vast library, and outdoor sports areas that support both academic and extracurricular activities. Emphasizing not only academic achievement but also character building, the school integrates moral values, leadership skills, and social responsibility into its curriculum.
             </p>
 
@@ -139,9 +160,9 @@ const About = () => {
                 { icon: <FaHistorical />, text: "Moral Values & Leadership" },
                 { icon: <FaSwimmer />, text: "Extracurricular Sports Areas" }
               ].map((feature, i) => (
-                <div key={i} className="flex items-center space-x-4 p-4 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="text-blue-600 text-xl">{feature.icon}</div>
-                  <span className="font-semibold text-gray-800">{feature.text}</span>
+                <div key={i} className="flex items-center space-x-4 p-4 rounded-2xl bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="text-blue-600 dark:text-blue-400 text-xl">{feature.icon}</div>
+                  <span className="font-semibold text-gray-800 dark:text-gray-200">{feature.text}</span>
                 </div>
               ))}
             </div>

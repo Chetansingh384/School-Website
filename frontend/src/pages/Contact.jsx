@@ -39,7 +39,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 dark:bg-slate-900 min-h-screen transition-colors duration-300">
       
       {/* Header */}
       <div className="relative pt-32 pb-24 overflow-hidden bg-slate-900 border-b-4 border-sky-500">
@@ -66,7 +66,7 @@ const Contact = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 -mt-10 relative z-20">
-        <div className="grid lg:grid-cols-5 gap-0 rounded-[2.5rem] overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 bg-white">
+        <div className="grid lg:grid-cols-5 gap-0 rounded-[2.5rem] overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 dark:border-slate-700 bg-white dark:bg-slate-800">
           
           {/* Contact Info Sidebar */}
           <div className="lg:col-span-2 bg-gradient-to-br from-indigo-900 to-slate-900 text-white p-12 relative overflow-hidden">
@@ -133,8 +133,8 @@ const Contact = () => {
           </div>
 
           {/* Contact Form */}
-          <div className="lg:col-span-3 p-12 lg:p-16 bg-white relative">
-            <h2 className="text-3xl font-black text-gray-900 mb-8">Send us a Message</h2>
+          <div className="lg:col-span-3 p-12 lg:p-16 bg-white dark:bg-slate-800 relative">
+            <h2 className="text-3xl font-black text-gray-900 dark:text-white mb-8">Send us a Message</h2>
             
             {status.message && (
               <div className={`p-4 mb-8 text-sm font-bold uppercase tracking-wider rounded-xl ${
@@ -154,10 +154,10 @@ const Contact = () => {
                     required 
                     value={formData.name}
                     onChange={handleChange}
-                    className="peer w-full border-b-2 border-gray-200 bg-transparent py-2.5 outline-none focus:border-indigo-600 transition-colors font-medium text-gray-900 placeholder-transparent"
+                    className="peer w-full border-b-2 border-gray-200 dark:border-slate-700 bg-transparent py-2.5 outline-none focus:border-indigo-600 dark:focus:border-sky-400 transition-colors font-medium text-gray-900 dark:text-white placeholder-transparent"
                     placeholder="Your Name"
                   />
-                  <label htmlFor="name" className="absolute left-0 -top-3.5 text-sm text-gray-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-2.5 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-indigo-600 font-bold uppercase tracking-wider">
+                  <label htmlFor="name" className="absolute left-0 -top-3.5 text-sm text-gray-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-2.5 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-indigo-600 dark:peer-focus:text-sky-400 font-bold uppercase tracking-wider">
                     Full Name
                   </label>
                 </div>
@@ -170,10 +170,10 @@ const Contact = () => {
                     required 
                     value={formData.email}
                     onChange={handleChange}
-                    className="peer w-full border-b-2 border-gray-200 bg-transparent py-2.5 outline-none focus:border-indigo-600 transition-colors font-medium text-gray-900 placeholder-transparent"
+                    className="peer w-full border-b-2 border-gray-200 dark:border-slate-700 bg-transparent py-2.5 outline-none focus:border-indigo-600 dark:focus:border-sky-400 transition-colors font-medium text-gray-900 dark:text-white placeholder-transparent"
                     placeholder="Your Email"
                   />
-                  <label htmlFor="email" className="absolute left-0 -top-3.5 text-sm text-gray-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-2.5 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-indigo-600 font-bold uppercase tracking-wider">
+                  <label htmlFor="email" className="absolute left-0 -top-3.5 text-sm text-gray-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-2.5 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-indigo-600 dark:peer-focus:text-sky-400 font-bold uppercase tracking-wider">
                     Email Address
                   </label>
                 </div>
@@ -187,10 +187,10 @@ const Contact = () => {
                   required 
                   value={formData.subject}
                   onChange={handleChange}
-                  className="peer w-full border-b-2 border-gray-200 bg-transparent py-2.5 outline-none focus:border-indigo-600 transition-colors font-medium text-gray-900 placeholder-transparent"
+                  className="peer w-full border-b-2 border-gray-200 dark:border-slate-700 bg-transparent py-2.5 outline-none focus:border-indigo-600 dark:focus:border-sky-400 transition-colors font-medium text-gray-900 dark:text-white placeholder-transparent"
                   placeholder="Subject"
                 />
-                <label htmlFor="subject" className="absolute left-0 -top-3.5 text-sm text-gray-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-2.5 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-indigo-600 font-bold uppercase tracking-wider">
+                <label htmlFor="subject" className="absolute left-0 -top-3.5 text-sm text-gray-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-2.5 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-indigo-600 dark:peer-focus:text-sky-400 font-bold uppercase tracking-wider">
                   Subject
                 </label>
               </div>
@@ -203,10 +203,10 @@ const Contact = () => {
                   rows="4" 
                   value={formData.message}
                   onChange={handleChange}
-                  className="peer w-full border-b-2 border-gray-200 bg-transparent py-2.5 outline-none focus:border-indigo-600 transition-colors font-medium text-gray-900 placeholder-transparent resize-none"
+                  className="peer w-full border-b-2 border-gray-200 dark:border-slate-700 bg-transparent py-2.5 outline-none focus:border-indigo-600 dark:focus:border-sky-400 transition-colors font-medium text-gray-900 dark:text-white placeholder-transparent resize-none"
                   placeholder="Message"
                 ></textarea>
-                <label htmlFor="message" className="absolute left-0 top-0 text-sm text-gray-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-6 peer-focus:top-0 peer-focus:text-sm peer-focus:text-indigo-600 font-bold uppercase tracking-wider">
+                <label htmlFor="message" className="absolute left-0 top-0 text-sm text-gray-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-6 peer-focus:top-0 peer-focus:text-sm peer-focus:text-indigo-600 dark:peer-focus:text-sky-400 font-bold uppercase tracking-wider">
                   Your Message
                 </label>
               </div>

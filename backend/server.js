@@ -2,13 +2,12 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
-const connectDB = require('./config/db');
 
 // Load env vars
 dotenv.config();
 
-// Connect to database
-connectDB();
+// Initialize Firebase Admin configuration
+require('./config/firebase');
 
 const app = express();
 
@@ -21,13 +20,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
-app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/gallery', require('./routes/galleryRoutes'));
 app.use('/api/activities', require('./routes/activityRoutes'));
 app.use('/api/announcements', require('./routes/announcementRoutes'));
 app.use('/api/principal-message', require('./routes/principalMessageRoutes'));
 app.use('/api/fees', require('./routes/feeRoutes'));
 app.use('/api/programs', require('./routes/programRoutes'));
+app.use('/api/faculty', require('./routes/facultyRoutes'));
 app.use('/api/contacts', require('./routes/contactRoutes'));
 app.use('/api/dashboard', require('./routes/dashboardRoutes'));
 

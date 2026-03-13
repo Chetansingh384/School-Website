@@ -1,47 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaChalkboardTeacher, FaAward } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import api from '../services/api';
 
 import next_icon from '../assets/next-icon.png';
 import back_icon from '../assets/back-icon.png';
-import faculty1 from '../assets/faculty1.jpeg';
-import faculty2 from '../assets/faculty2.jpeg';
-import faculty3 from '../assets/faculty3.jpeg';
-import faculty4 from '../assets/faculty4.jpeg';
-
-const facultyMembers = [
-  {
-    name: "Dr. John Doe",
-    role: "Mathematics Department",
-    bio: "Dr. John Doe has over 10 years of experience in teaching Mathematics. He is known for his engaging teaching style and dedication to student success.",
-    image: faculty1,
-    color: "from-blue-500 to-indigo-600"
-  },
-  {
-    name: "Prof. Jane Smith",
-    role: "Science Department",
-    bio: "Prof. Jane Smith specializes in Physics and has published several research papers in reputed journals. She is passionate about inspiring young minds.",
-    image: faculty2,
-    color: "from-purple-500 to-pink-600"
-  },
-  {
-    name: "Mr. Alan Brown",
-    role: "History Department",
-    bio: "Mr. Alan Brown is a dedicated History teacher with a knack for making history come alive through storytelling and real-world connections.",
-    image: faculty3,
-    color: "from-emerald-400 to-teal-500"
-  },
-  {
-    name: "Ms. Emily White",
-    role: "Language Arts Department",
-    bio: "Ms. Emily White has a passion for literature and writing, encouraging her students to express themselves creatively and critically.",
-    image: faculty4,
-    color: "from-orange-400 to-red-500"
-  }
-];
+import campusImg from '../assets/campusimage.png';
 
 const Faculty = () => {
+  const [facultyMembers, setFacultyMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [tx, setTx] = useState(0);
+
+  useEffect(() => {
+    const fetchFaculty = async () => {
+      try {
+        const { data } = await api.get('/faculty');
+        setFacultyMembers(data);
+      } catch (error) {
+        console.error('Error fetching faculty:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFaculty();
+  }, []);
 
   const slideForward = () => {
     if (tx > -50) {
@@ -56,9 +39,11 @@ const Faculty = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      
-      {/* Modern Header */}
+    <div className="bg-gray-50 dark:bg-slate-900 min-h-screen relative transition-colors duration-300">
+      {/* Background Campus Image */}
+      <div className="absolute inset-0 z-0 opacity-40">
+        <img src={campusImg} alt="Campus" className="w-full h-full object-cover fixed" />
+      </div>
       <div className="relative pt-32 pb-24 overflow-hidden bg-gray-900 border-b-4 border-amber-500">
         <div className="absolute inset-0 z-0 opacity-20">
           <svg className="absolute w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -101,28 +86,37 @@ const Faculty = () => {
         />
         
         <div className="overflow-hidden">
-          <ul className="flex w-[200%] transition-transform duration-500 ease-in-out" style={{ transform: `translateX(${tx}%)` }}>
-            {facultyMembers.map((member, idx) => (
-              <li key={idx} className="list-none w-1/4 p-2 md:p-5">
-                <div className="bg-white shadow-[0_0_20px_rgba(0,0,0,0.05)] p-5 md:p-10 rounded-2xl text-[#676767] leading-relaxed h-full border border-gray-100">
-                  <div className="flex flex-col sm:flex-row sm:items-center mb-5 md:mb-6">
-                    <img 
-                      src={member.image} 
-                      alt={member.name} 
-                      className="w-[60px] h-[60px] md:w-[100px] md:h-[100px] rounded-full mb-3 sm:mb-0 sm:mr-4 border-4 border-[#219aa0] object-cover" 
-                    />
-                    <div>
-                      <h3 className="text-[#219aa0] text-lg md:text-xl font-bold">{member.name}</h3>
-                      <span className="text-gray-500 text-xs md:text-sm font-semibold uppercase">{member.role}</span>
+          {loading ? (
+             <div className="flex justify-center items-center py-20 text-blue-500">
+               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+             </div>
+          ) : (
+            <ul className="flex w-[200%] transition-transform duration-500 ease-in-out" style={{ transform: `translateX(${tx}%)` }}>
+              {facultyMembers.map((member, idx) => (
+                <li key={idx} className="list-none w-1/4 p-2 md:p-5">
+                  <div className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-md shadow-[0_0_20px_rgba(0,0,0,0.1)] p-5 md:p-10 rounded-2xl text-gray-700 dark:text-gray-300 leading-relaxed h-full border border-white/40 dark:border-slate-700 transition-colors duration-300">
+                    <div className="flex flex-col sm:flex-row sm:items-center mb-5 md:mb-6">
+                      <img 
+                        src={member.imageUrl} 
+                        alt={member.name} 
+                        className="w-[60px] h-[60px] md:w-[100px] md:h-[100px] rounded-full mb-3 sm:mb-0 sm:mr-4 border-4 border-[#219aa0] object-cover" 
+                      />
+                      <div>
+                        <h3 className="text-[#219aa0] dark:text-blue-400 text-lg md:text-xl font-bold">{member.name}</h3>
+                        <span className="text-gray-500 dark:text-gray-400 text-xs md:text-sm font-semibold uppercase">{member.role}</span>
+                      </div>
                     </div>
+                    <p className="text-sm md:text-base">
+                      {member.bio}
+                    </p>
                   </div>
-                  <p className="text-sm md:text-base">
-                    {member.bio}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
+                </li>
+              ))}
+              {facultyMembers.length === 0 && (
+                <div className="w-full text-center py-10 text-gray-500 font-medium">No faculty members found.</div>
+              )}
+            </ul>
+          )}
         </div>
       </div>
       

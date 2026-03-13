@@ -4,10 +4,9 @@ import { Link } from 'react-router-dom';
 
 const Scholarships = () => {
   return (
-    <div className="bg-slate-950 min-h-screen overflow-hidden">
+    <div className="bg-gray-50 dark:bg-slate-950 min-h-screen overflow-hidden transition-colors duration-300 text-gray-900 dark:text-gray-200">
       
-      {/* Hero Section */}
-      <div className="relative pt-32 pb-24 overflow-hidden border-b border-indigo-500/30">
+      <div className="relative pt-32 pb-24 overflow-hidden border-b border-indigo-500/30 bg-slate-900 dark:bg-slate-950 transition-colors duration-300">
         <div className="absolute inset-0">
           <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-purple-600/20 blur-[120px] rounded-full"></div>
           <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-indigo-600/20 blur-[120px] rounded-full"></div>
@@ -18,7 +17,7 @@ const Scholarships = () => {
           <div className="inline-flex p-4 rounded-full bg-indigo-900/50 border border-indigo-500/50 mb-6 backdrop-blur-md shadow-[0_0_30px_rgba(99,102,241,0.3)]">
             <FaHandsHelping className="text-4xl text-indigo-400" />
           </div>
-          <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight">
+          <h1 className="text-5xl md:text-7xl font-black text-gray-900 dark:text-white mb-6 tracking-tight">
             Financial <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Aid & Scholarships</span>
           </h1>
           <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">

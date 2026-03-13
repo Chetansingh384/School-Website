@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, Navigate, Link, useNavigate, useLocation } from 'react-router-dom';
-import { FaHome, FaImages, FaRunning, FaBullhorn, FaUserTie, FaMoneyBillWave, FaBookOpen, FaSignOutAlt, FaBars, FaTimes } from 'react-icons/fa';
+import { 
+  FaTachometerAlt, FaImages, FaCalendarAlt, FaBullhorn, 
+  FaUserTie, FaSignOutAlt, FaBars, FaTimes, FaMoneyBillWave, FaBookOpen 
+} from 'react-icons/fa';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from '../firebase';
+import ManageGallery from './ManageGallery';
+import ManageActivities from './ManageActivities';
+import ManageAnnouncements from './ManageAnnouncements';
+import ManagePrincipalMessage from './ManagePrincipalMessage';
+import ManageFees from './ManageFees';
+import ManagePrograms from './ManagePrograms';
+import ManageFaculty from './ManageFaculty';
 
 const AdminLayout = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -10,31 +22,41 @@ const AdminLayout = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const adminInfo = localStorage.getItem('adminInfo');
-    if (adminInfo) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-    }
-    setLoading(false);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+        localStorage.removeItem('adminInfo'); // Clean up fallback
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('adminInfo');
-    navigate('/admin/login');
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.removeItem('adminInfo');
+      navigate('/admin/login');
+    } catch (error) {
+      console.error("Error signing out: ", error);
+    }
   };
 
   if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   if (!isAuthenticated) return <Navigate to="/admin/login" />;
 
-  const menuItems = [
-    { title: 'Dashboard', path: '/admin', icon: <FaHome /> },
-    { title: 'Manage Gallery', path: '/admin/gallery', icon: <FaImages /> },
-    { title: 'Manage Activities', path: '/admin/activities', icon: <FaRunning /> },
-    { title: 'Manage Announcements', path: '/admin/announcements', icon: <FaBullhorn /> },
-    { title: 'Manage Principal Message', path: '/admin/principal-message', icon: <FaUserTie /> },
-    { title: 'Manage Fees', path: '/admin/fees', icon: <FaMoneyBillWave /> },
-    { title: 'Manage Programs', path: '/admin/programs', icon: <FaBookOpen /> },
+  const navItems = [
+    { name: 'Dashboard', path: '/admin', icon: FaTachometerAlt },
+    { name: 'Manage Gallery', path: '/admin/gallery', icon: FaImages },
+    { name: 'Manage Activities', path: '/admin/activities', icon: FaCalendarAlt },
+    { name: 'Manage Announcements', path: '/admin/announcements', icon: FaBullhorn },
+    { name: 'Manage Principal Message', path: '/admin/principal-message', icon: FaUserTie },
+    { name: 'Manage Fees', path: '/admin/fees', icon: FaMoneyBillWave },
+    { name: 'Manage Programs', path: '/admin/programs', icon: FaBookOpen },
+    { name: 'Manage Faculty', path: '/admin/faculty', icon: FaUsers },
   ];
 
   return (
@@ -46,7 +68,7 @@ const AdminLayout = () => {
         </div>
         <div className="flex flex-col h-[calc(100vh-4rem)] justify-between">
           <nav className="p-4 space-y-2 overflow-y-auto">
-            {menuItems.map((item) => (
+            {navItems.map((item) => (
               <Link 
                 key={item.path} 
                 to={item.path}
@@ -54,8 +76,8 @@ const AdminLayout = () => {
                   location.pathname === item.path ? 'bg-blue-800 text-yellow-400' : 'hover:bg-blue-800 hover:text-white'
                 }`}
               >
-                <span className="text-xl">{item.icon}</span>
-                <span className="font-medium">{item.title}</span>
+                <item.icon className="text-xl" />
+                <span className="font-medium">{item.name}</span>
               </Link>
             ))}
           </nav>

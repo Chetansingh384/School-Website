@@ -20,7 +20,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="bg-gray-50">
+    <div className="bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
       {/* Advanced Hero Section */}
       <div className="relative w-full min-h-screen flex flex-col justify-center items-center text-center overflow-hidden">
         {/* Animated Background Overlay */}
@@ -31,7 +31,7 @@ const Home = () => {
             className="w-full h-full object-cover object-center animate-pulse"
             style={{ animationDuration: '20s' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-950/90 via-blue-900/80 to-purple-900/90 backdrop-blur-[2px]"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-950/60 via-blue-900/40 to-purple-900/60 backdrop-blur-none"></div>
         </div>
 
         {/* Hero Content */}
@@ -84,14 +84,14 @@ const Home = () => {
             { icon: <FaLaptopCode size={44} />, title: 'Smart Technology', desc: 'AI-integrated labs and 1:1 device programs.', color: 'from-purple-500 to-indigo-700' },
             { icon: <FaBasketballBall size={44} />, title: 'Dynamic Athletics', desc: 'Championship-winning sports teams and facilities.', color: 'from-orange-500 to-red-700' }
           ].map((item, index) => (
-            <div key={index} className="bg-white rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden group">
+            <div key={index} className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden group">
               <div className={`h-2 w-full bg-gradient-to-r ${item.color}`}></div>
               <div className="p-8">
                 <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${item.color} text-white flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-500`}>
                   {item.icon}
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-900">{item.title}</h3>
-                <p className="text-gray-600 leading-relaxed font-medium">{item.desc}</p>
+                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">{item.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed font-medium">{item.desc}</p>
               </div>
             </div>
           ))}

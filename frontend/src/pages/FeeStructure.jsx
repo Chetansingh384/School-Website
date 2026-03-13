@@ -7,29 +7,17 @@ const FeeStructure = () => {
   const [fees, setFees] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fallback data mapping to exactly match the screenshot's values
-  const fallbackFees = [
-    { _id: '1', className: 'LKG', fee2425: 8490, fee2526: 9300 },
-    { _id: '2', className: 'UKG', fee2425: 8775, fee2526: 9600 },
-    { _id: '3', className: '1st', fee2425: 8936, fee2526: 9800 },
-    { _id: '4', className: '2nd', fee2425: 9111, fee2526: 10000 },
-    { _id: '5', className: '3rd', fee2425: 9298, fee2526: 10200 },
-    { _id: '6', className: '4th', fee2425: 9476, fee2526: 10400 },
-    { _id: '7', className: '5th', fee2425: 9742, fee2526: 10700 },
-    { _id: '8', className: '6th', fee2425: 9918, fee2526: 10900 },
-    { _id: '9', className: '7th', fee2425: 10095, fee2526: 11000 },
-    { _id: '10', className: '8th', fee2425: 10272, fee2526: 11200 },
-    { _id: '11', className: '9th', fee2425: 14520, fee2526: 15900 },
-    { _id: '12', className: '10th', fee2425: 16265, fee2526: 17800 },
-  ];
+  // No fallback data - strictly synchronized with admin dashboard
+  const fallbackFees = [];
 
   useEffect(() => {
     const fetchFees = async () => {
       try {
         const { data } = await api.get('/fees');
         if (data && data.length > 0) {
-          // Sort or just use as-is
-          setFees(data);
+          // Sort by the `order` field ascending before saving to state
+          const sortedData = data.sort((a, b) => (Number(a.order) || 99) - (Number(b.order) || 99));
+          setFees(sortedData);
         } else {
           setFees(fallbackFees);
         }
@@ -44,7 +32,7 @@ const FeeStructure = () => {
   }, []);
 
   return (
-    <div className="bg-gray-950 min-h-screen text-gray-200 selection:bg-cyan-500/30 font-sans">
+    <div className="bg-white dark:bg-slate-900 min-h-screen text-gray-900 dark:text-gray-200 selection:bg-cyan-500/30 font-sans transition-colors duration-300">
       
       {/* Extreme Header Design */}
       <div className="relative pt-32 pb-24 overflow-hidden flex flex-col items-center justify-center min-h-[40vh]">
@@ -75,8 +63,8 @@ const FeeStructure = () => {
 
 
         {/* Dynamic Table Section matching the provided screenshot design */}
-        <div className="relative rounded-2xl bg-white text-gray-900 shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col p-6 max-w-5xl mx-auto mt-10">
-          <h2 className="text-2xl font-bold text-center mb-6 mt-2 text-gray-800 tracking-tight">Fee Details (2024–25 and 2025–26)</h2>
+        <div className="relative rounded-2xl bg-white dark:bg-slate-800 text-gray-900 dark:text-white shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col p-6 max-w-5xl mx-auto mt-10 transition-colors duration-300">
+          <h2 className="text-2xl font-bold text-center mb-6 mt-2 text-gray-800 dark:text-white tracking-tight">Fee Details (2024–25 and 2025–26)</h2>
           
           {loading ? (
              <div className="flex justify-center items-center py-20 text-gray-400">
