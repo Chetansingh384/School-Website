@@ -1,0 +1,106 @@
+.campus {
+    width: 100%;
+    position: relative;
+  }
+  
+  .gallery {
+    width: 100%;
+    height: 500px; /* Adjust the height as per your requirement */
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .gallery img {
+    position: absolute;
+    width: 100%; /* Ensure the image takes up the full width */
+    height: 100%; /* Ensure the image takes up the full height */
+    object-fit: contain; /* Cover the entire area while maintaining the image's aspect ratio */
+    opacity: 0;
+    transition: opacity 1s ease-in-out; /* Smooth transition between images */
+  }
+  
+  .gallery img.active {
+    opacity: 1; /* Show the active image */
+  }
+
+  .button-container {
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+  }
+  
+  
+  .btn.dark-btn {
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Horizontally center the button */
+    align-items: center;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Add a transition to the button */
+  }
+  
+  .btn.dark-btn:hover {
+    background-color: #555; /* Darken the button on hover */
+  }
+  
+  .btn.dark-btn img {
+    margin-left: 10px;
+  }
+  
+  /* Modal styling for full gallery view */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9); /* Dark background with transparency */
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .modal-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto; /* Allow scrolling if the images exceed the height */
+  }
+  
+  .modal-gallery img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+  }
+  
+  /* Ensure modal responsiveness */
+  @media (max-width: 600px) {
+    .gallery {
+      height: 300px;
+    }
+    .modal-gallery {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+  }
+  

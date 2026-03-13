@@ -1,0 +1,36 @@
+.course-image-container {
+  text-align: center; /* Center the image */
+  margin-top: 20px;
+}
+
+.course-image {
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .Course {
+    padding: 15px; /* Adjust padding for smaller screens */
+  }
+
+  .Course h2 {
+    font-size: 1.2em; /* Smaller font size for medium screens */
+  }
+
+  .course-image {
+    max-width: 90%; /* Restrict image width for medium screens */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .Course h2 {
+    font-size: 1.1em; /* Further reduce heading size for phones */
+  }
+
+  .course-image {
+    max-width: 100%; /* Full-width image for smaller screens */
+  }
+}
+

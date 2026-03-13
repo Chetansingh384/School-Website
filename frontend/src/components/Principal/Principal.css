@@ -1,0 +1,53 @@
+.principal-section {
+  display: flex;
+  align-items: center;
+  margin: 40px 0; /* Adjust margin as needed */
+}
+
+.principal-image {
+  width: 200px; /* Set the size of the image */
+  height: 200px; /* Set the size of the image */
+  border-radius: 50%; /* Circular shape */
+  border: 4px solid #219aa0; /* Border style */
+  margin-right: 20px; /* Space between image and text */
+}
+
+.principal-info h3 {
+  color: #219aa0; /* Principal's name color */
+  margin: 0; /* Remove default margin */
+}
+
+.principal-info p {
+  color: #676767; /* Text color */
+  line-height: 1.5; /* Line height for readability */
+}
+
+/* Media query for phone resolutions */
+@media (max-width: 480px) {
+  .principal-section {
+    flex-direction: column; /* Stack image and text vertically */
+    text-align: center; /* Center-align text */
+    padding: 10px; /* Add padding for small screens */
+  }
+
+  .principal-image {
+    width: 150px; /* Reduce image size */
+    height: 150px; /* Reduce image size */
+    margin: 0 auto 15px; /* Center image and add spacing below */
+  }
+
+  .principal-info h3 {
+    font-size: 18px; /* Adjust font size for smaller screens */
+    margin-bottom: 10px; /* Add some spacing below the name */
+  }
+
+  .principal-info p {
+    font-size: 14px; /* Adjust text size for readability */
+    line-height: 1.4; /* Adjust line height */
+    margin-bottom: 20px; /* Add space below the paragraph */
+  }
+
+  .principal-info p br {
+    display: none; /* Remove <br> for better text flow on mobile */
+  }
+}
