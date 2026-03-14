@@ -122,11 +122,11 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div 
-        className={`fixed inset-0 z-40 bg-gray-900/95 backdrop-blur-xl transform transition-transform duration-300 ease-in-out xl:hidden ${
+        className={`fixed inset-0 z-40 bg-gray-900/95 backdrop-blur-xl transform transition-transform duration-300 ease-in-out xl:hidden overflow-y-auto h-screen ${
           nav ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex flex-col h-full pt-24 px-6 relative">
+        <div className="flex flex-col min-h-full pt-24 pb-12 px-6 relative">
           <button 
             onClick={closeNav} 
             className="absolute top-6 right-6 p-2 text-white/70 hover:text-white"
