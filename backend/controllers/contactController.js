@@ -8,7 +8,7 @@ const getDb = () => {
 };
 
 // @desc    Get contact info
-// @route   GET /api/contacts
+// @route   GET /api/contact
 // @access  Public
 const getContactInfo = async (req, res) => {
   try {
@@ -28,7 +28,7 @@ const getContactInfo = async (req, res) => {
 };
 
 // @desc    Update or create contact info
-// @route   PUT /api/contacts
+// @route   PUT /api/contact
 // @access  Private
 const updateContactInfo = async (req, res) => {
   try {

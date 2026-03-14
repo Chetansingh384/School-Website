@@ -28,7 +28,7 @@ app.use('/api/fees', require('./routes/feeRoutes'));
 app.use('/api/programs', require('./routes/programRoutes'));
 app.use('/api/faculty', require('./routes/facultyRoutes'));
 app.use('/api/books', require('./routes/bookRoutes'));
-app.use('/api/contacts', require('./routes/contactRoutes'));
+app.use('/api/contact', require('./routes/contactRoutes'));
 app.use('/api/dashboard', require('./routes/dashboardRoutes'));
 
 app.get('/', (req, res) => {

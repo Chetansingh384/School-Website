@@ -3,10 +3,12 @@ import { Outlet, Navigate, Link, useNavigate, useLocation } from 'react-router-d
 import { 
   FaTachometerAlt, FaImages, FaCalendarAlt, FaBullhorn, 
   FaUserTie, FaSignOutAlt, FaBars, FaTimes, FaMoneyBillWave, FaBookOpen,
-  FaUsers, FaBook
+  FaUsers, FaBook, FaEnvelope
 } from 'react-icons/fa';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
+import ManageBooks from './ManageBooks';
+import ManageContact from './ManageContact';
 
 const AdminLayout = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -73,6 +75,7 @@ const AdminLayout = () => {
     { name: 'Manage Programs', path: '/admin/programs', icon: FaBookOpen },
     { name: 'Manage Faculty', path: '/admin/faculty', icon: FaUsers },
     { name: 'Manage Books', path: '/admin/books', icon: FaBook },
+    { name: 'Manage Contact', path: '/admin/contact', icon: FaEnvelope },
   ];
 
   return (

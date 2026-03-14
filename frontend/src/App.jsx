@@ -29,6 +29,7 @@ import ManageFees from './admin/ManageFees';
 import ManagePrograms from './admin/ManagePrograms';
 import ManageFaculty from './admin/ManageFaculty';
 import ManageBooks from './admin/ManageBooks';
+import ManageContact from './admin/ManageContact';
 
 function App() {
   return (
@@ -61,6 +62,7 @@ function App() {
                 <Route path="programs" element={<ManagePrograms />} />
                 <Route path="faculty" element={<ManageFaculty />} />
                 <Route path="books" element={<ManageBooks />} />
+                <Route path="contact" element={<ManageContact />} />
               </Route>
             </Routes>
           </main>
