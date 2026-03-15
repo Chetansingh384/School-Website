@@ -54,15 +54,11 @@ const Home = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-5">
-            <Link to="/about" className="group relative px-8 py-4 bg-white text-blue-900 font-bold rounded-full overflow-hidden shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_rgba(255,255,255,0.5)] transition-all duration-300">
+            <Link to="/contact" className="group relative px-8 py-4 bg-white text-blue-900 font-bold rounded-full overflow-hidden shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_rgba(255,255,255,0.5)] transition-all duration-300">
               <span className="relative z-10 flex items-center">
-                Explore Our Campus <FaArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                Apply for Admissions <FaArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </span>
               <div className="absolute inset-0 bg-yellow-400 scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500 ease-out z-0"></div>
-            </Link>
-            
-            <Link to="/contact" className="px-8 py-4 border border-white/30 backdrop-blur-md bg-white/10 text-white font-bold rounded-full hover:bg-white/20 transition-all duration-300 shadow-xl">
-              Apply for Admissions
             </Link>
           </div>
         </div>

@@ -10,10 +10,6 @@ const Navbar = () => {
   const location = useLocation();
   const { isDark, toggleTheme } = useTheme();
 
-  if (location.pathname.startsWith('/admin')) {
-    return null;
-  }
-
   const handleNav = () => setNav(!nav);
   const closeNav = () => setNav(false);
 
@@ -36,6 +32,10 @@ const Navbar = () => {
       document.body.style.overflow = 'unset';
     };
   }, [nav]);
+
+  if (location.pathname.startsWith('/admin')) {
+    return null;
+  }
 
   const navLinks = [
     { title: 'Home', path: '/' },

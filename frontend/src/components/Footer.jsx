@@ -71,10 +71,10 @@ const Footer = () => {
               <span className="absolute bottom-0 left-0 w-1/2 h-1 bg-purple-500 rounded-full -mb-2"></span>
             </h3>
             <ul className="space-y-3">
-              {['Student Portal', 'Parent Gateway', 'Fee Structure', 'Event Calendar', 'Admin Login'].map((item, i) => (
+              {['Fee Structure'].map((item, i) => (
                 <li key={i}>
                   <Link 
-                    to={item === 'Admin Login' ? '/admin/login' : item === 'Fee Structure' ? '/fees' : '#'} 
+                    to={'/fees'} 
                     className="text-gray-400 hover:text-purple-400 flex items-center transition-colors duration-200"
                   >
                     <span className="text-purple-500 mr-2 text-xs">➽</span> {item}
