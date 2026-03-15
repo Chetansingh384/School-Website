@@ -36,13 +36,17 @@ const CourseDetail = () => {
   return (
     <div className="bg-gray-50 dark:bg-slate-900 min-h-screen pb-24 transition-colors duration-300">
       {/* Header Section */}
-      <div className="relative pt-32 pb-16 bg-gradient-to-br from-green-700 via-green-600 to-emerald-800 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <rect width="100%" height="100%" fill="none" stroke="white" strokeWidth="2" strokeDasharray="10 20" />
-          </svg>
+      <div className="relative pt-32 pb-24 overflow-hidden flex flex-col items-center justify-center min-h-[40vh]">
+        <div className="absolute inset-0 z-0 bg-[#0f172a]">
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-30 mix-blend-overlay"></div>
+          
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-600/30 rounded-full blur-[120px] animate-pulse-slow"></div>
+          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-green-800/40 rounded-full blur-[150px] animate-pulse-slow object-cover" style={{animationDelay: '1.5s'}}></div>
+          
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/60 to-transparent"></div>
         </div>
-        <div className="max-w-7xl mx-auto px-4 relative z-10 text-center animate-fade-in">
+
+        <div className="max-w-7xl mx-auto px-4 relative z-10 text-center animate-fade-in-up mt-8">
           <FaBookOpen className="text-5xl text-white/40 mx-auto mb-6" />
           <h1 className="text-4xl md:text-6xl font-black text-white mb-4 tracking-tight drop-shadow-md">
             Course <span className="text-yellow-300">Details</span>
