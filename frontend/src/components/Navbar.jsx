@@ -93,14 +93,6 @@ const Navbar = () => {
               >
                 {isDark ? <FaSun size={20} /> : <FaMoon size={20} />}
               </button>
-              <Link 
-                to="/admin/login" 
-                className={`inline-block whitespace-nowrap px-5 py-2.5 rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-md ${
-                  scrolled ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:shadow-lg' : 'bg-white text-blue-700 hover:bg-gray-50'
-                }`}
-              >
-                Portal Login
-              </Link>
             </li>
           </ul>
 
@@ -161,13 +153,6 @@ const Navbar = () => {
                   {isDark ? <FaSun size={24} /> : <FaMoon size={24} />}
                 </button>
               </div>
-              <Link 
-                onClick={closeNav} 
-                to="/admin/login" 
-                className="block text-center w-full py-4 text-xl font-bold rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg"
-              >
-                Access Portal
-              </Link>
             </li>
           </ul>
         </div>
