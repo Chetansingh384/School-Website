@@ -116,6 +116,53 @@ const Home = () => {
         </div>
       </div>
 
+      {/* Founder's Message Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+        <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-hidden">
+          <div className="flex flex-col md:flex-row">
+            
+            {/* Image Placeholder Frame */}
+            <div className="md:w-2/5 p-8 md:p-12 flex justify-center items-center bg-gray-50 dark:bg-slate-700/50">
+              <div className="relative w-full max-w-sm aspect-[4/5] rounded-2xl bg-gray-200 dark:bg-slate-700 border-4 border-dashed border-gray-300 dark:border-slate-500 flex flex-col items-center justify-center overflow-hidden group">
+                <div className="absolute inset-0 bg-blue-600/5 group-hover:bg-blue-600/10 transition-colors"></div>
+                <FaUsers className="text-6xl text-gray-400 dark:text-gray-500 mb-4" />
+                <span className="text-gray-500 dark:text-gray-400 font-medium text-sm text-center px-4">
+                  Insert Founder / Principal Picture Here
+                </span>
+                {/* Decorative elements behind the frame */}
+                <div className="absolute -z-10 -bottom-6 -right-6 w-24 h-24 bg-yellow-400 rounded-full blur-2xl opacity-50"></div>
+                <div className="absolute -z-10 -top-6 -left-6 w-32 h-32 bg-blue-600 rounded-full blur-2xl opacity-40"></div>
+              </div>
+            </div>
+
+            {/* Content Area */}
+            <div className="md:w-3/5 p-8 md:p-16 flex flex-col justify-center">
+              <div className="inline-block mb-3">
+                <span className="text-blue-600 dark:text-blue-400 font-bold tracking-wider uppercase text-sm border-b-2 border-yellow-400 pb-1">
+                  Words of Vision
+                </span>
+              </div>
+              <h2 className="text-3xl md:text-5xl font-black text-gray-900 dark:text-white mb-6">
+                From the Founder's Desk
+              </h2>
+              
+              <div className="relative">
+                <span className="absolute -top-6 -left-4 text-6xl text-blue-500 dark:text-blue-400 opacity-20 font-serif">"</span>
+                <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed font-light italic mb-8 relative z-10">
+                  Education is not merely about accumulating facts, but about awakening a lifelong curiosity and building the character necessary to navigate a complex world. We founded this institution with a singular vision: to create a nurturing environment where every child's unique potential can flourish. We don't just prepare students for college; we prepare them for life.
+                </p>
+              </div>
+
+              <div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">Dr. A. N. Sharma</h4>
+                <p className="text-blue-600 dark:text-blue-400 font-medium">Founder & Principal</p>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 };
