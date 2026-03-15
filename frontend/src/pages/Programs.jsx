@@ -3,6 +3,7 @@ import { FaGraduationCap, FaSpinner } from 'react-icons/fa';
 import api from '../services/api';
 
 // Fallback images
+import campusimage from '../assets/campusimage.png';
 import campus7 from '../assets/campus7.jpeg';
 import campus6 from '../assets/campus6.jpeg';
 
@@ -39,18 +40,17 @@ const Programs = () => {
       
       {/* Dynamic Header */}
       <div className="relative pt-32 pb-24 bg-blue-950 overflow-hidden">
-        {/* Abstract Background Elements */}
-        <div className="absolute inset-0 z-0 opacity-20">
-          <svg className="absolute w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="1"/>
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-          </svg>
-          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply opacity-50 blur-3xl transform translate-x-1/3 -translate-y-1/3"></div>
-          <div className="absolute bottom-0 left-0 w-72 h-72 bg-purple-600 rounded-full mix-blend-multiply opacity-30 blur-2xl transform -translate-x-1/2 translate-y-1/2"></div>
+        {/* Beautiful Image Background with Overlay */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src={campusimage} 
+            alt="Campus Background" 
+            className="w-full h-full object-cover opacity-30"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-blue-950 via-blue-900/80 to-blue-950/90 mix-blend-multiply"></div>
+          {/* Abstract glows */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full mix-blend-screen opacity-40 blur-3xl transform translate-x-1/3 -translate-y-1/3"></div>
+          <div className="absolute bottom-0 left-0 w-72 h-72 bg-purple-600 rounded-full mix-blend-screen opacity-20 blur-2xl transform -translate-x-1/2 translate-y-1/2"></div>
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fade-in-up">
