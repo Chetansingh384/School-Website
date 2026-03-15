@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api', // adjust base URL for production
+  baseURL: import.meta.env.PROD ? '/api' : 'http://localhost:5000/api', // automatically resolves to production or local
 });
 
 // Add a request interceptor to include JWT token
