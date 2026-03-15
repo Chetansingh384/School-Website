@@ -32,17 +32,8 @@ const Footer = () => {
               Empowering the next generation with cutting-edge knowledge, strong moral values, and the character to shape a brighter future for the world.
             </p>
             <div className="flex space-x-4 pt-2">
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all duration-300 hover:-translate-y-1">
-                <FaFacebook size={18} />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-400 hover:text-white transition-all duration-300 hover:-translate-y-1">
-                <FaTwitter size={18} />
-              </a>
               <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-pink-600 hover:text-white transition-all duration-300 hover:-translate-y-1">
                 <FaInstagram size={18} />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-800 hover:text-white transition-all duration-300 hover:-translate-y-1">
-                <FaLinkedin size={18} />
               </a>
             </div>
           </div>
