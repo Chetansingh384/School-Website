@@ -93,24 +93,17 @@ const Footer = () => {
             <ul className="space-y-5">
               <li className="flex items-start">
                 <FaMapMarkerAlt className="text-indigo-400 mt-1 mr-4 flex-shrink-0" size={18} />
-                <span className="text-gray-400 text-sm">123 Education Boulevard, Innovation District, Knowledge City 54321</span>
+                <span className="text-gray-400 text-sm">Khedi Road, Alot Dist. Ratlam, Madhya Pradesh, India</span>
               </li>
               <li className="flex items-center">
                 <FaPhoneAlt className="text-indigo-400 mr-4 flex-shrink-0" size={16} />
-                <span className="text-gray-400 text-sm hover:text-white cursor-pointer transition-colors">+1 (800) 123-4567</span>
+                <span className="text-gray-400 text-sm hover:text-white cursor-pointer transition-colors">+91 9977166947</span>
               </li>
               <li className="flex items-center">
                 <FaEnvelope className="text-indigo-400 mr-4 flex-shrink-0" size={16} />
-                <span className="text-gray-400 text-sm hover:text-white cursor-pointer transition-colors">admissions@smartschool.edu</span>
+                <span className="text-gray-400 text-sm hover:text-white cursor-pointer transition-colors">kalidaschildrenshighschool@gmail.com</span>
               </li>
             </ul>
-            
-            <div className="mt-6 bg-gray-900 rounded-lg p-1 border border-gray-800 flex">
-              <input type="email" placeholder="Subscribe to newsletter" className="bg-transparent border-none outline-none text-sm text-gray-300 px-4 w-full" />
-              <button className="bg-indigo-600 hover:bg-indigo-500 text-white rounded-md px-4 py-2 text-sm font-semibold transition-colors">Subscribe</button>
-            </div>
-          </div>
-        </div>
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-sm text-gray-500">
