@@ -36,17 +36,27 @@ const Gallery = () => {
   return (
     <div className="bg-gray-50 dark:bg-slate-900 min-h-screen transition-colors duration-300">
 
-      {/* Header */}
-      <div className="relative pt-32 pb-24 overflow-hidden bg-blue-950 border-b-8 border-indigo-500">
-        <div className="absolute inset-0 z-0 opacity-20">
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-indigo-400 via-transparent to-transparent"></div>
-          <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-blue-500 via-transparent to-transparent"></div>
+      {/* Hero Header */}
+      <div className="relative pt-32 pb-24 overflow-hidden flex flex-col items-center justify-center min-h-[40vh]">
+        {/* Dynamic Abstract Background */}
+        <div className="absolute inset-0 z-0 bg-slate-950">
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-40 mix-blend-overlay"></div>
+          
+          {/* Animated Glowing Orbs */}
+          <div className="absolute -top-32 -left-32 w-96 h-96 bg-purple-600/30 rounded-full blur-[100px] animate-pulse-slow"></div>
+          <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-indigo-600/30 rounded-full blur-[100px] animate-pulse-slow" style={{animationDelay: '1.5s'}}></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-sky-500/10 rounded-full blur-[120px] animate-pulse-slow" style={{animationDelay: '3s'}}></div>
+
+          {/* Fade to bottom */}
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent"></div>
         </div>
-        
-        <div className="relative z-10 max-w-7xl mx-auto px-4 text-center animate-fade-in-up">
-          <FaImages className="text-6xl text-indigo-400 mx-auto mb-6" />
-          <h1 className="text-5xl md:text-7xl font-black text-white mb-6 uppercase tracking-tighter drop-shadow-lg">
-            Campus <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-sky-300">Moments</span>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 text-center animate-fade-in-up mt-8">
+          <div className="inline-flex items-center justify-center p-4 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 ring-1 ring-white/20 shadow-[0_0_40px_rgba(99,102,241,0.3)] mb-8">
+            <FaImages className="text-4xl text-indigo-400" />
+          </div>
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 tracking-tighter drop-shadow-2xl">
+            Campus <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-sky-400 animate-gradient-x">Moments</span>
           </h1>
           <p className="text-xl md:text-2xl text-blue-100 max-w-2xl mx-auto font-light leading-relaxed">
             A visual journey through the vibrant life, achievements, and everyday miracles at SmartSchool.
