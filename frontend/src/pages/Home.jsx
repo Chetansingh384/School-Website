@@ -154,7 +154,7 @@ const Home = () => {
               </div>
 
               <div>
-                <h4 className="text-xl font-bold text-gray-900 dark:text-white">Dr. A. N. Sharma</h4>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">Mr. Vishnu Singh Chouhan</h4>
                 <p className="text-blue-600 dark:text-blue-400 font-medium">Founder & Principal</p>
               </div>
             </div>
