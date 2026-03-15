@@ -95,6 +95,8 @@ const Footer = () => {
                 <span className="text-gray-400 text-sm hover:text-white cursor-pointer transition-colors">kalidaschildrenshighschool@gmail.com</span>
               </li>
             </ul>
+          </div>
+        </div>
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-sm text-gray-500">
