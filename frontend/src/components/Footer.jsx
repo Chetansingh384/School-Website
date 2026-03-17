@@ -24,7 +24,7 @@ const Footer = () => {
             <div className="flex items-center space-x-3 cursor-pointer">
               <FaGraduationCap className="text-5xl text-blue-500" />
               <div>
-                <h2 className="text-3xl font-black text-white tracking-tight leading-none">Smart<span className="text-blue-500">School</span></h2>
+                <h2 className="text-3xl font-black text-white tracking-tight leading-none">Kalidas Children's High School</h2>
                 <p className="text-xs text-blue-300 font-semibold tracking-widest uppercase mt-1">Excellence in Education</p>
               </div>
             </div>
