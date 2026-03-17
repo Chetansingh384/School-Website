@@ -56,7 +56,9 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <Link to="/" className="flex items-center">
-              <img src={logoImg} alt="School Logo" className="h-12 w-auto object-contain rounded" />
+              <div className="bg-white/90 backdrop-blur-sm p-1.5 rounded-lg shadow-lg border border-white/20 transition-transform hover:scale-105">
+                <img src={logoImg} alt="School Logo" className="h-14 w-auto object-contain rounded" />
+              </div>
             </Link>
           </div>
 
