@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaGraduationCap } from 'react-icons/fa';
+import logoImg from '../assets/logo1.jpeg';
 
 const Footer = () => {
   const location = useLocation();
@@ -21,11 +22,11 @@ const Footer = () => {
           
           {/* Brand Section */}
           <div className="space-y-6">
-            <div className="flex items-center space-x-3 cursor-pointer">
-              <FaGraduationCap className="text-5xl text-blue-500" />
+            <div className="flex flex-col space-y-3 cursor-pointer">
+              <img src={logoImg} alt="School Logo" className="h-16 w-auto object-contain rounded" />
               <div>
-                <h2 className="text-3xl font-black text-white tracking-tight leading-none">Kalidas Children's High School</h2>
-                <p className="text-xs text-blue-300 font-semibold tracking-widest uppercase mt-1">Excellence in Education</p>
+                <h2 className="text-3xl font-black text-white tracking-tight leading-none mt-2">Kalidas Children's High School</h2>
+                <p className="text-xs text-blue-300 font-semibold tracking-widest uppercase mt-2">शिक्षा ही धन है</p>
               </div>
             </div>
             <p className="text-gray-400 leading-relaxed text-sm">
