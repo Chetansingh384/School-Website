@@ -68,7 +68,7 @@ const Scholarships = () => {
             <div>
               <h2 className="text-4xl font-black text-white mb-6">Application <span className="text-indigo-400">Process</span></h2>
               <p className="text-slate-300 text-lg mb-8 leading-relaxed">
-                Applying for a scholarship at SmartSchool is a straightforward process designed to identify your unique strengths and needs.
+                Applying for a scholarship at Kalidas Children's High School is a straightforward process designed to identify your unique strengths and needs.
               </p>
               
               <ul className="space-y-6">

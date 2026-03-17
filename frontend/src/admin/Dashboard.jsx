@@ -35,7 +35,7 @@ const Dashboard = () => {
   return (
     <div>
       <h1 className="text-3xl font-bold text-gray-800 mb-2">Dashboard Overview</h1>
-      <p className="text-gray-500 mb-8">Welcome to the SmartSchool Admin Panel. Manage your website content from here.</p>
+      <p className="text-gray-500 mb-8">Welcome to the Kalidas Children's High School Admin Panel. Manage your website content from here.</p>
 
       {loading ? (
         <div className="flex justify-center items-center h-48">

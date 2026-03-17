@@ -59,7 +59,7 @@ const Gallery = () => {
             Campus <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-sky-400 animate-gradient-x">Moments</span>
           </h1>
           <p className="text-xl md:text-2xl text-blue-100 max-w-2xl mx-auto font-light leading-relaxed">
-            A visual journey through the vibrant life, achievements, and everyday miracles at SmartSchool.
+            A visual journey through the vibrant life, achievements, and everyday miracles at Kalidas Children's High School.
           </p>
         </div>
       </div>

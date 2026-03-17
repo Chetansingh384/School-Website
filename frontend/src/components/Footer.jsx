@@ -100,7 +100,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-sm text-gray-500">
-          <p>&copy; {new Date().getFullYear()} SmartSchool. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Kalidas Children's High School. All rights reserved.</p>
           <div className="flex space-x-6">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-white transition-colors">Terms of Service</a>

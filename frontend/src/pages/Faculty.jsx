@@ -130,7 +130,7 @@ const Faculty = () => {
             We are always looking for exceptional educators to join our renowned faculty and help shape the next generation.
           </p>
           <Link to="/contact" className="inline-block px-10 py-5 bg-white text-blue-900 font-black rounded-full uppercase tracking-widest hover:bg-transparent hover:text-white hover:border-white border-2 border-white transition-all duration-300 shadow-xl">
-            Careers at SmartSchool
+            Careers at Kalidas Children's High School
           </Link>
         </div>
       </div>
