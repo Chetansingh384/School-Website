@@ -56,11 +56,11 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <Link to="/" className="flex items-center group">
-              <div className="relative rounded-full p-1 bg-white/20 backdrop-blur-md shadow-[0_0_15px_rgba(255,255,255,0.4)] transition-transform duration-300 group-hover:scale-105 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.6)]">
+              <div className="bg-white p-1 rounded-xl shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.6)]">
                 <img 
                   src={logoImg} 
                   alt="School Logo" 
-                  className="h-12 w-12 md:h-14 md:w-14 object-cover rounded-full border border-white/50" 
+                  className="h-12 md:h-14 w-auto object-contain rounded-lg" 
                 />
               </div>
             </Link>
