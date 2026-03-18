@@ -24,7 +24,7 @@ const Home = () => {
 
   useEffect(() => {
     const firstLine = 'शिक्षा ही';
-    const secondLine = 'धन है';
+    const secondLine = 'धन है।';
 
     const segmenter =
       typeof Intl !== 'undefined' && Intl.Segmenter
