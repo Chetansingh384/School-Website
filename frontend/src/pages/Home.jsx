@@ -45,9 +45,8 @@ const Home = () => {
 <h1 className="text-5xl md:text-8xl font-black text-white mb-6 leading-tight tracking-tighter drop-shadow-2xl">
               शिक्षा ही <br/>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-300 to-yellow-500 animate-pulse mt-2 block pb-4">
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-blue-100 mb-10 max-w-3xl font-light leading-relaxed drop-shadow-md">
+                धन है
+              </span>
             Discover a world-class educational experience where innovation meets tradition. We shape the leaders, thinkers, and creators of tomorrow.
           </p>
           
