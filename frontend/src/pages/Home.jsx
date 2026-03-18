@@ -48,13 +48,15 @@ const Home = () => {
 
     const typeTimer = setInterval(() => {
       if (firstIndex < firstChars.length) {
-        setTypedFirstLine((prev) => prev + firstChars[firstIndex]);
+        const nextChar = firstChars[firstIndex] ?? '';
+        setTypedFirstLine((prev) => prev + nextChar);
         firstIndex += 1;
         return;
       }
 
       if (secondIndex < secondChars.length) {
-        setTypedSecondLine((prev) => prev + secondChars[secondIndex]);
+        const nextChar = secondChars[secondIndex] ?? '';
+        setTypedSecondLine((prev) => prev + nextChar);
         secondIndex += 1;
         return;
       }
