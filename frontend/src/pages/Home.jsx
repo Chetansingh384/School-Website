@@ -6,6 +6,9 @@ import { FaGraduationCap, FaBookOpen, FaLaptopCode, FaBasketballBall, FaArrowRig
 
 const Home = () => {
   const [announcements, setAnnouncements] = useState([]);
+  const [typedFirstLine, setTypedFirstLine] = useState('');
+  const [typedSecondLine, setTypedSecondLine] = useState('');
+  const [isTypingDone, setIsTypingDone] = useState(false);
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
@@ -17,6 +20,50 @@ const Home = () => {
       }
     };
     fetchAnnouncements();
+  }, []);
+
+  useEffect(() => {
+    const firstLine = 'शिक्षा ही';
+    const secondLine = 'धन है';
+
+    const segmenter =
+      typeof Intl !== 'undefined' && Intl.Segmenter
+        ? new Intl.Segmenter('hi', { granularity: 'grapheme' })
+        : null;
+
+    const toGraphemes = (text) =>
+      segmenter
+        ? Array.from(segmenter.segment(text), (item) => item.segment)
+        : Array.from(text);
+
+    const firstChars = toGraphemes(firstLine);
+    const secondChars = toGraphemes(secondLine);
+
+    let firstIndex = 0;
+    let secondIndex = 0;
+
+    setTypedFirstLine('');
+    setTypedSecondLine('');
+    setIsTypingDone(false);
+
+    const typeTimer = setInterval(() => {
+      if (firstIndex < firstChars.length) {
+        setTypedFirstLine((prev) => prev + firstChars[firstIndex]);
+        firstIndex += 1;
+        return;
+      }
+
+      if (secondIndex < secondChars.length) {
+        setTypedSecondLine((prev) => prev + secondChars[secondIndex]);
+        secondIndex += 1;
+        return;
+      }
+
+      setIsTypingDone(true);
+      clearInterval(typeTimer);
+    }, 130);
+
+    return () => clearInterval(typeTimer);
   }, []);
 
   return (
@@ -43,9 +90,15 @@ const Home = () => {
           </div>
           
           <h1 className="text-5xl md:text-8xl font-black text-white mb-6 leading-[1.18] md:leading-[1.1] drop-shadow-2xl">
-            शिक्षा ही <br/>
+            {typedFirstLine || '\u00A0'} <br/>
             <span className="text-yellow-400 animate-pulse mt-2 block leading-[1.25] md:leading-[1.2] pt-1">
-              धन है
+              {typedSecondLine || '\u00A0'}
+              {!isTypingDone && (
+                <span
+                  aria-hidden="true"
+                  className="inline-block ml-2 w-[0.08em] h-[0.9em] bg-yellow-300 align-[-0.06em] animate-pulse"
+                />
+              )}
             </span>
           </h1>
           <p className="text-xl md:text-2xl text-blue-100 mb-10 max-w-3xl font-light leading-relaxed drop-shadow-md">
