@@ -1,32 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { FaImages, FaTimes, FaFilter, FaSearchPlus } from 'react-icons/fa';
-import api from '../services/api';
+
+const campusImageModules = import.meta.glob('../assets/campus*.{jpeg,jpg,png}', {
+  eager: true,
+  import: 'default',
+});
+
+const localCampusImages = Object.entries(campusImageModules)
+  .sort((a, b) => {
+    const aNum = Number((a[0].match(/campus(\d+)/i) || [])[1] || 999);
+    const bNum = Number((b[0].match(/campus(\d+)/i) || [])[1] || 999);
+    return aNum - bNum;
+  })
+  .map(([, url], index) => ({
+    _id: `local-campus-${index + 1}`,
+    imageUrl: url,
+    category: 'Campus',
+    description: `Campus Photo ${index + 1}`,
+    mediaType: 'image',
+  }));
 
 const Gallery = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('All');
-  const [categories, setCategories] = useState(['All']);
+  const [categories, setCategories] = useState(['All', 'Campus']);
   const [fullscreenImage, setFullscreenImage] = useState(null);
 
   useEffect(() => {
-    const fetchGallery = async () => {
-      try {
-        const { data } = await api.get('/gallery');
-        setImages(data);
-        const uniqueCategories = ['All', ...new Set(data.map(img => img.category))];
-        setCategories(uniqueCategories);
-      } catch (error) {
-        console.error("Error fetching gallery", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    // Simulate slight delay to keep the nice loading animation
-    setTimeout(() => {
-      fetchGallery();
-    }, 500);
+    // Use all campus images from repo assets in numeric order (campus1 onward)
+    setImages(localCampusImages);
+    setLoading(false);
   }, []);
 
   const filteredImages = filter === 'All' 
