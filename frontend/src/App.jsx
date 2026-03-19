@@ -15,7 +15,6 @@ import FeeStructure from './pages/FeeStructure';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
 import Scholarships from './pages/Scholarships';
-import Faculty from './pages/Faculty';
 import CourseDetail from './pages/CourseDetail';
 
 import AdminLogin from './admin/AdminLogin';
@@ -27,7 +26,6 @@ import ManageAnnouncements from './admin/ManageAnnouncements';
 import ManagePrincipalMessage from './admin/ManagePrincipalMessage';
 import ManageFees from './admin/ManageFees';
 import ManagePrograms from './admin/ManagePrograms';
-import ManageFaculty from './admin/ManageFaculty';
 import ManageBooks from './admin/ManageBooks';
 import ManageContact from './admin/ManageContact';
 
@@ -46,7 +44,6 @@ function App() {
               <Route path="/fees" element={<FeeStructure />} />
               <Route path="/scholarships" element={<Scholarships />} />
               <Route path="/gallery" element={<Gallery />} />
-              <Route path="/faculty" element={<Faculty />} />
               <Route path="/course-detail" element={<CourseDetail />} />
               <Route path="/contact" element={<Contact />} />
 
@@ -60,7 +57,6 @@ function App() {
                 <Route path="principal-message" element={<ManagePrincipalMessage />} />
                 <Route path="fees" element={<ManageFees />} />
                 <Route path="programs" element={<ManagePrograms />} />
-                <Route path="faculty" element={<ManageFaculty />} />
                 <Route path="books" element={<ManageBooks />} />
                 <Route path="contact" element={<ManageContact />} />
               </Route>

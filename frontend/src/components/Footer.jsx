@@ -46,7 +46,7 @@ const Footer = () => {
               <span className="absolute bottom-0 left-0 w-1/2 h-1 bg-blue-500 rounded-full -mb-2"></span>
             </h3>
             <ul className="space-y-3">
-              {['Home', 'About Us', 'Academic Programs', 'Faculty', 'Admissions', 'Contact Us'].map((item, i) => (
+              {['Home', 'About Us', 'Academic Programs', 'Admissions', 'Contact Us'].map((item, i) => (
                 <li key={i}>
                   <Link to={item.toLowerCase().includes('home') ? '/' : `/${item.toLowerCase().split(' ')[0]}`} className="text-gray-400 hover:text-blue-400 flex items-center transition-colors duration-200">
                     <span className="text-blue-500 mr-2 text-xs">➽</span> {item}
@@ -100,13 +100,8 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-sm text-gray-500">
+        <div className="pt-8 border-t border-gray-800 flex justify-center items-center text-sm text-gray-500">
           <p>&copy; {new Date().getFullYear()} Kalidas Children's High School. All rights reserved.</p>
-          <div className="flex space-x-6">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-white transition-colors">Sitemap</a>
-          </div>
         </div>
       </div>
     </footer>

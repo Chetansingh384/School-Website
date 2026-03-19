@@ -3,7 +3,7 @@ import { Outlet, Navigate, Link, useNavigate, useLocation } from 'react-router-d
 import { 
   FaTachometerAlt, FaImages, FaCalendarAlt, FaBullhorn, 
   FaUserTie, FaSignOutAlt, FaBars, FaTimes, FaMoneyBillWave, FaBookOpen,
-  FaUsers, FaBook, FaEnvelope
+  FaBook, FaEnvelope
 } from 'react-icons/fa';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
@@ -73,7 +73,6 @@ const AdminLayout = () => {
     { name: 'Manage Principal Message', path: '/admin/principal-message', icon: FaUserTie },
     { name: 'Manage Fees', path: '/admin/fees', icon: FaMoneyBillWave },
     { name: 'Manage Programs', path: '/admin/programs', icon: FaBookOpen },
-    { name: 'Manage Faculty', path: '/admin/faculty', icon: FaUsers },
     { name: 'Manage Books', path: '/admin/books', icon: FaBook },
     { name: 'Manage Contact', path: '/admin/contact', icon: FaEnvelope },
   ];
