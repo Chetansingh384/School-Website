@@ -82,6 +82,35 @@ const addGalleryItem = async (req, res) => {
   }
 };
 
+// @desc    Update gallery item metadata
+// @route   PUT /api/gallery/:id
+// @access  Private
+const updateGalleryItem = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { category, description } = req.body;
+    const db = getDb();
+    const galleryRef = db.collection('gallery').doc(id);
+    const doc = await galleryRef.get();
+
+    if (!doc.exists) {
+      return res.status(404).json({ message: 'Gallery item not found' });
+    }
+
+    await galleryRef.update({
+      category: category !== undefined ? category : (doc.data().category || 'Other'),
+      description: description !== undefined ? description : (doc.data().description || ''),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    const updatedDoc = await galleryRef.get();
+    res.json({ _id: updatedDoc.id, ...updatedDoc.data() });
+  } catch (error) {
+    console.error('Update Error:', error);
+    res.status(500).json({ message: error.message || 'Failed to update gallery item' });
+  }
+};
+
 // @desc    Delete a gallery item
 // @route   DELETE /api/gallery/:id
 // @access  Private
@@ -116,5 +145,6 @@ const deleteGalleryItem = async (req, res) => {
 module.exports = {
   getGallery,
   addGalleryItem,
+  updateGalleryItem,
   deleteGalleryItem
 };

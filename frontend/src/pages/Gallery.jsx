@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaImages, FaTimes, FaFilter, FaSearchPlus } from 'react-icons/fa';
+import api from '../services/api';
 
 const campusImageModules = import.meta.glob('../assets/campus*.{jpeg,jpg,png}', {
   eager: true,
@@ -28,9 +29,23 @@ const Gallery = () => {
   const [fullscreenImage, setFullscreenImage] = useState(null);
 
   useEffect(() => {
-    // Use all campus images from repo assets in numeric order (campus1 onward)
-    setImages(localCampusImages);
-    setLoading(false);
+    const fetchGallery = async () => {
+      try {
+        const { data } = await api.get('/gallery');
+        const activeImages = data && data.length > 0 ? data : localCampusImages;
+        setImages(activeImages);
+        const uniqueCategories = ['All', ...new Set(activeImages.map((img) => img.category || 'Campus'))];
+        setCategories(uniqueCategories);
+      } catch (error) {
+        console.error('Error fetching gallery, using local images:', error);
+        setImages(localCampusImages);
+        setCategories(['All', ...new Set(localCampusImages.map((img) => img.category))]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGallery();
   }, []);
 
   const filteredImages = filter === 'All' 
