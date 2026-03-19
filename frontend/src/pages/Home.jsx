@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
 import campusImg from '../assets/campusimage.png';
@@ -10,6 +10,9 @@ const Home = () => {
   const [typedFirstLine, setTypedFirstLine] = useState('');
   const [typedSecondLine, setTypedSecondLine] = useState('');
   const [isTypingDone, setIsTypingDone] = useState(false);
+  const [statsVisible, setStatsVisible] = useState(false);
+  const [animatedStats, setAnimatedStats] = useState({ students: 0, instructors: 0, acceptance: 0 });
+  const statsRef = useRef(null);
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
@@ -68,6 +71,51 @@ const Home = () => {
 
     return () => clearInterval(typeTimer);
   }, []);
+
+  useEffect(() => {
+    if (!statsRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStatsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.35 }
+    );
+
+    observer.observe(statsRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!statsVisible) return;
+
+    const duration = 1600;
+    const targets = { students: 2500, instructors: 150, acceptance: 98 };
+    let animationFrame;
+    let startTime;
+
+    const animate = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+
+      setAnimatedStats({
+        students: Math.round(targets.students * easeOutCubic),
+        instructors: Math.round(targets.instructors * easeOutCubic),
+        acceptance: Math.round(targets.acceptance * easeOutCubic),
+      });
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [statsVisible]);
 
   return (
     <div className="bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
@@ -150,22 +198,22 @@ const Home = () => {
       </div>
 
       {/* Stats Section with Parallax Feel */}
-      <div className="my-24 bg-blue-900 py-16 relative overflow-hidden">
+      <div ref={statsRef} className="my-24 bg-blue-900 py-16 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
         <div className="max-w-7xl mx-auto px-4 flex flex-wrap justify-between items-center text-center relative z-10">
           <div className="w-full sm:w-1/3 mb-8 sm:mb-0 transform hover:scale-105 transition-transform">
             <FaUsers className="text-5xl text-yellow-400 mx-auto mb-4" />
-            <h3 className="text-5xl font-black text-white mb-2">2,500+</h3>
+            <h3 className="text-5xl font-black text-white mb-2">{animatedStats.students.toLocaleString()}+</h3>
             <p className="text-blue-200 font-semibold tracking-wider uppercase text-sm">Enrolled Students</p>
           </div>
           <div className="w-full sm:w-1/3 mb-8 sm:mb-0 transform hover:scale-105 transition-transform">
             <FaChalkboardTeacher className="text-5xl text-yellow-400 mx-auto mb-4" />
-            <h3 className="text-5xl font-black text-white mb-2">150+</h3>
+            <h3 className="text-5xl font-black text-white mb-2">{animatedStats.instructors}+</h3>
             <p className="text-blue-200 font-semibold tracking-wider uppercase text-sm">Expert Instructors</p>
           </div>
           <div className="w-full sm:w-1/3 transform hover:scale-105 transition-transform">
             <FaAward className="text-5xl text-yellow-400 mx-auto mb-4" />
-            <h3 className="text-5xl font-black text-white mb-2">98%</h3>
+            <h3 className="text-5xl font-black text-white mb-2">{animatedStats.acceptance}%</h3>
             <p className="text-blue-200 font-semibold tracking-wider uppercase text-sm">College Acceptance</p>
           </div>
         </div>
