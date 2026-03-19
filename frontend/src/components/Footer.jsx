@@ -22,10 +22,10 @@ const Footer = () => {
           
           {/* Brand Section */}
           <div className="space-y-6">
-            <div className="flex flex-col space-y-3 cursor-pointer">
+            <div className="flex items-start gap-4 cursor-pointer">
               <img src={logoImg} alt="School Logo" className="h-16 w-auto object-contain rounded" />
               <div>
-                <h2 className="text-3xl font-black text-white tracking-tight leading-none mt-2">Kalidas Children's High School</h2>
+                <h2 className="text-3xl font-black text-white tracking-tight leading-none">Kalidas Children's High School</h2>
                 <p className="text-xs text-blue-300 font-semibold tracking-widest uppercase mt-2">शिक्षा ही धन है</p>
               </div>
             </div>
