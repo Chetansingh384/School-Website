@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
 import campusImg from '../assets/campusimage.png';
+import principalImg from '../assets/principal2.png';
 import { FaGraduationCap, FaBookOpen, FaLaptopCode, FaBasketballBall, FaArrowRight, FaAward, FaChalkboardTeacher, FaUsers } from 'react-icons/fa';
 
 const Home = () => {
@@ -175,17 +176,15 @@ const Home = () => {
         <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-hidden">
           <div className="flex flex-col md:flex-row">
             
-            {/* Image Placeholder Frame */}
+            {/* Founder Image */}
             <div className="md:w-2/5 p-8 md:p-12 flex justify-center items-center bg-gray-50 dark:bg-slate-700/50">
-              <div className="relative w-full max-w-sm aspect-[4/5] rounded-2xl bg-gray-200 dark:bg-slate-700 border-4 border-dashed border-gray-300 dark:border-slate-500 flex flex-col items-center justify-center overflow-hidden group">
-                <div className="absolute inset-0 bg-blue-600/5 group-hover:bg-blue-600/10 transition-colors"></div>
-                <FaUsers className="text-6xl text-gray-400 dark:text-gray-500 mb-4" />
-                <span className="text-gray-500 dark:text-gray-400 font-medium text-sm text-center px-4">
-                  Insert Founder / Principal Picture Here
-                </span>
-                {/* Decorative elements behind the frame */}
-                <div className="absolute -z-10 -bottom-6 -right-6 w-24 h-24 bg-yellow-400 rounded-full blur-2xl opacity-50"></div>
-                <div className="absolute -z-10 -top-6 -left-6 w-32 h-32 bg-blue-600 rounded-full blur-2xl opacity-40"></div>
+              <div className="relative w-full max-w-sm aspect-[4/5] rounded-2xl overflow-hidden shadow-xl ring-1 ring-white/50 dark:ring-white/10 group">
+                <img
+                  src={principalImg}
+                  alt="Founder and Principal"
+                  className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-950/25 via-transparent to-transparent"></div>
               </div>
             </div>
 
