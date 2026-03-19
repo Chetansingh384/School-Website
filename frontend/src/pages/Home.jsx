@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
 import campusImg from '../assets/campusimage.png';
-import principalImg from '../assets/principal2.png';
 import { FaGraduationCap, FaBookOpen, FaLaptopCode, FaBasketballBall, FaArrowRight, FaAward, FaChalkboardTeacher, FaUsers } from 'react-icons/fa';
 
 const Home = () => {
@@ -180,7 +179,7 @@ const Home = () => {
             <div className="md:w-2/5 p-8 md:p-12 flex justify-center items-center bg-gray-50 dark:bg-slate-700/50">
               <div className="relative w-full max-w-sm aspect-[4/5] rounded-2xl overflow-hidden shadow-xl ring-1 ring-white/50 dark:ring-white/10 group">
                 <img
-                  src={principalImg}
+                  src="/Image.png"
                   alt="Founder and Principal"
                   className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
                 />
