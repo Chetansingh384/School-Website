@@ -1,35 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import api from '../services/api';
-import { FaShieldAlt, FaSpinner } from 'react-icons/fa';
+import React from 'react';
+import { FaShieldAlt } from 'react-icons/fa';
 
 const FeeStructure = () => {
-  const [fees, setFees] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // No fallback data - strictly synchronized with admin dashboard
-  const fallbackFees = [];
-
-  useEffect(() => {
-    const fetchFees = async () => {
-      try {
-        const { data } = await api.get('/fees');
-        if (data && data.length > 0) {
-          // Sort by the `order` field ascending before saving to state
-          const sortedData = data.sort((a, b) => (Number(a.order) || 99) - (Number(b.order) || 99));
-          setFees(sortedData);
-        } else {
-          setFees(fallbackFees);
-        }
-      } catch (error) {
-        console.error('Error fetching fees, using fallback:', error);
-        setFees(fallbackFees);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchFees();
-  }, []);
+  const fees = [
+    { className: 'Nursery', fee2627: 9300 },
+    { className: 'LKG', fee2627: 9300 },
+    { className: 'UKG', fee2627: 9600 },
+    { className: '1st', fee2627: 9800 },
+    { className: '2nd', fee2627: 10000 },
+    { className: '3rd', fee2627: 10200 },
+    { className: '4th', fee2627: 10400 },
+    { className: '5th', fee2627: 10700 },
+    { className: '6th', fee2627: 10900 },
+    { className: '7th', fee2627: 11000 },
+    { className: '8th', fee2627: 11200 },
+    { className: '9th', fee2627: 16000 },
+    { className: '10th', fee2627: 17800 },
+  ];
 
   return (
     <div className="bg-white dark:bg-slate-900 min-h-screen text-gray-900 dark:text-gray-200 selection:bg-cyan-500/30 font-sans transition-colors duration-300">
@@ -64,39 +51,26 @@ const FeeStructure = () => {
 
         {/* Dynamic Table Section matching the provided screenshot design */}
         <div className="relative rounded-2xl bg-white dark:bg-slate-800 text-gray-900 dark:text-white shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col p-6 max-w-5xl mx-auto mt-10 transition-colors duration-300">
-          <h2 className="text-2xl font-bold text-center mb-6 mt-2 text-gray-800 dark:text-white tracking-tight">Fee Details (2024–25 and 2025–26)</h2>
-          
-          {loading ? (
-             <div className="flex justify-center items-center py-20 text-gray-400">
-               <FaSpinner className="animate-spin text-4xl text-green-500 mb-4" />
-             </div>
-          ) : (
-             <div className="overflow-x-auto w-full border border-gray-200 rounded-md">
-               <table className="w-full text-center border-collapse">
-                 <thead>
-                   <tr className="bg-[#4CAF50] text-white">
-                     <th className="py-4 px-4 font-bold border-r border-green-600 w-1/3 text-[15px]">Class</th>
-                     <th className="py-4 px-4 font-bold border-r border-green-600 w-1/3 text-[15px]">2024–25 (₹)</th>
-                     <th className="py-4 px-4 font-bold w-1/3 text-[15px]">2025–26 (₹)</th>
-                   </tr>
-                 </thead>
-                 <tbody className="bg-white divide-y divide-gray-100">
-                   {fees.map((fee, idx) => (
-                     <tr key={fee._id || idx} className={idx % 2 === 0 ? 'bg-white hover:bg-gray-50' : 'bg-[#F2F2F2] hover:bg-gray-100'}>
-                       <td className="py-3 px-4 text-sm border-r border-gray-200 font-medium text-gray-800">{fee.className}</td>
-                       <td className="py-3 px-4 text-sm border-r border-gray-200 text-gray-700">{fee.fee2425}</td>
-                       <td className="py-3 px-4 text-sm text-gray-700">{fee.fee2526}</td>
-                     </tr>
-                   ))}
-                   {fees.length === 0 && (
-                     <tr>
-                       <td colSpan="3" className="py-8 text-gray-500">No fee records found.</td>
-                     </tr>
-                   )}
-                 </tbody>
-               </table>
-             </div>
-          )}
+          <h2 className="text-2xl font-bold text-center mb-6 mt-2 text-gray-800 dark:text-white tracking-tight">Fee Details (2026–27)</h2>
+
+          <div className="overflow-x-auto w-full border border-gray-200 rounded-md">
+            <table className="w-full text-center border-collapse">
+              <thead>
+                <tr className="bg-[#4CAF50] text-white">
+                  <th className="py-4 px-4 font-bold border-r border-green-600 w-1/2 text-[15px]">Class</th>
+                  <th className="py-4 px-4 font-bold w-1/2 text-[15px]">2026–27 (₹)</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-100">
+                {fees.map((fee, idx) => (
+                  <tr key={idx} className={idx % 2 === 0 ? 'bg-white hover:bg-gray-50' : 'bg-[#F2F2F2] hover:bg-gray-100'}>
+                    <td className="py-3 px-4 text-sm border-r border-gray-200 font-medium text-gray-800">{fee.className}</td>
+                    <td className="py-3 px-4 text-sm text-gray-700">{fee.fee2627}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <div className="mt-8 text-center max-w-5xl mx-auto">
