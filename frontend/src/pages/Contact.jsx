@@ -10,6 +10,8 @@ const Contact = () => {
   const [status, setStatus] = useState({ type: '', message: '' });
   const [sending, setSending] = useState(false);
 
+  const WEB3FORMS_ACCESS_KEY = 'b5554ec4-6cf8-4690-a019-409192e82ba6';
+
   useEffect(() => {
     const fetchContactInfo = async () => {
       try {
@@ -26,16 +28,44 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSending(true);
-    // Simulate sending email
-    setTimeout(() => {
-      setStatus({ type: 'success', message: 'Your message has been sent successfully! Our team will get back to you soon.' });
-      setFormData({ name: '', email: '', subject: '', message: '' });
+
+    try {
+      const payload = new FormData();
+      payload.append('access_key', WEB3FORMS_ACCESS_KEY);
+      payload.append('name', formData.name);
+      payload.append('email', formData.email);
+      payload.append('subject', formData.subject);
+      payload.append('message', formData.message);
+      payload.append('from_name', "Kalidas Children's High School Website");
+
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: payload,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setStatus({ type: 'success', message: 'Your message has been sent successfully! Our team will get back to you soon.' });
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setStatus({
+          type: 'error',
+          message: result.message || 'Failed to send message. Please try again.',
+        });
+      }
+    } catch (error) {
+      setStatus({
+        type: 'error',
+        message: 'Unable to send your message right now. Please try again shortly.',
+      });
+    } finally {
       setSending(false);
       setTimeout(() => setStatus({ type: '', message: '' }), 5000);
-    }, 1500);
+    }
   };
 
   return (
