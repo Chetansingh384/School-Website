@@ -45,12 +45,12 @@ const Programs = () => {
           <img 
             src={campusimage} 
             alt="Campus Background" 
-            className="w-full h-full object-cover opacity-30"
+            className="w-full h-full object-cover opacity-55"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-blue-950 via-blue-900/80 to-blue-950/90 mix-blend-multiply"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-blue-950/65 via-blue-900/35 to-blue-950/60"></div>
           {/* Abstract glows */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full mix-blend-screen opacity-40 blur-3xl transform translate-x-1/3 -translate-y-1/3"></div>
-          <div className="absolute bottom-0 left-0 w-72 h-72 bg-purple-600 rounded-full mix-blend-screen opacity-20 blur-2xl transform -translate-x-1/2 translate-y-1/2"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full mix-blend-screen opacity-28 blur-3xl transform translate-x-1/3 -translate-y-1/3"></div>
+          <div className="absolute bottom-0 left-0 w-72 h-72 bg-purple-600 rounded-full mix-blend-screen opacity-16 blur-2xl transform -translate-x-1/2 translate-y-1/2"></div>
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fade-in-up">
