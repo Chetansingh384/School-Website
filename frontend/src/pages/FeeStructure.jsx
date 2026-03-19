@@ -50,22 +50,22 @@ const FeeStructure = () => {
 
 
         {/* Dynamic Table Section matching the provided screenshot design */}
-        <div className="relative rounded-2xl bg-white dark:bg-slate-800 text-gray-900 dark:text-white shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col p-6 max-w-5xl mx-auto mt-10 transition-colors duration-300">
-          <h2 className="text-2xl font-bold text-center mb-6 mt-2 text-gray-800 dark:text-white tracking-tight">Fee Details (2026–27)</h2>
+        <div className="relative rounded-2xl bg-slate-900/90 border border-blue-400/25 text-white shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col p-6 max-w-5xl mx-auto mt-10 transition-colors duration-300 backdrop-blur-sm">
+          <h2 className="text-2xl font-bold text-center mb-6 mt-2 text-white tracking-tight">Fee Details (2026–27)</h2>
 
-          <div className="overflow-x-auto w-full border border-gray-200 rounded-md">
+          <div className="overflow-x-auto w-full border border-blue-400/30 rounded-lg bg-slate-950/60">
             <table className="w-full text-center border-collapse">
               <thead>
-                <tr className="bg-[#4CAF50] text-white">
-                  <th className="py-4 px-4 font-bold border-r border-green-600 w-1/2 text-[15px]">Class</th>
+                <tr className="bg-gradient-to-r from-blue-700 to-blue-600 text-white">
+                  <th className="py-4 px-4 font-bold border-r border-blue-500/70 w-1/2 text-[15px]">Class</th>
                   <th className="py-4 px-4 font-bold w-1/2 text-[15px]">2026–27 (₹)</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-100">
+              <tbody className="divide-y divide-blue-300/10">
                 {fees.map((fee, idx) => (
-                  <tr key={idx} className={idx % 2 === 0 ? 'bg-white hover:bg-gray-50' : 'bg-[#F2F2F2] hover:bg-gray-100'}>
-                    <td className="py-3 px-4 text-sm border-r border-gray-200 font-medium text-gray-800">{fee.className}</td>
-                    <td className="py-3 px-4 text-sm text-gray-700">{fee.fee2627}</td>
+                  <tr key={idx} className={idx % 2 === 0 ? 'bg-slate-900/60 hover:bg-blue-900/30' : 'bg-slate-800/60 hover:bg-blue-900/25'}>
+                    <td className="py-3 px-4 text-sm border-r border-blue-300/15 font-medium text-blue-100">{fee.className}</td>
+                    <td className="py-3 px-4 text-sm text-slate-100">{fee.fee2627}</td>
                   </tr>
                 ))}
               </tbody>
