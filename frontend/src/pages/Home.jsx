@@ -178,13 +178,13 @@ const Home = () => {
             
             {/* Founder Image */}
             <div className="md:w-[36%] p-6 md:p-8 flex justify-center items-center bg-gray-50 dark:bg-slate-700/50">
-              <div className="relative w-full max-w-[280px] aspect-[4/5] rounded-2xl overflow-hidden shadow-xl ring-1 ring-white/50 dark:ring-white/10 group">
+              <div className="relative w-full max-w-[280px] aspect-square rounded-full overflow-hidden shadow-xl ring-2 ring-blue-300/60 dark:ring-blue-300/30 group">
                 <img
                   src={principalMessageImg}
                   alt="Founder and Principal"
                   className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-950/25 via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-950/20 via-transparent to-transparent"></div>
               </div>
             </div>
 
