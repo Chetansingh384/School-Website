@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
-import { FaMoneyBillWave, FaTrash, FaPlus, FaEdit } from 'react-icons/fa';
+import { FaMoneyBillWave, FaTrash, FaPlus, FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
 
 const ManageFees = () => {
   const [fees, setFees] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  // Form State
-  const [isEditing, setIsEditing] = useState(false);
-  const [currentId, setCurrentId] = useState(null);
-  const [formData, setFormData] = useState({
+  // Add Form State
+  const [addFormData, setAddFormData] = useState({
     className: '',
     fee2425: '',
     fee2526: '',
     order: ''
   });
+
+  // Inline Edit State
+  const [editingRowId, setEditingRowId] = useState(null);
+  const [editFormData, setEditFormData] = useState({
+    className: '',
+    fee2425: '',
+    fee2526: '',
+    order: ''
+  });
+
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -32,23 +40,18 @@ const ManageFees = () => {
     }
   };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleAddChange = (e) => {
+    setAddFormData({ ...addFormData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleAddSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
 
     try {
-      if (isEditing) {
-        const { data } = await api.put(`/fees/${currentId}`, formData);
-        setFees(fees.map(fee => fee._id === currentId ? data : fee));
-      } else {
-        const { data } = await api.post('/fees', formData);
-        setFees([...fees, data]);
-      }
-      resetForm();
+      const { data } = await api.post('/fees', addFormData);
+      setFees([...fees, data]);
+      setAddFormData({ className: '', fee2425: '', fee2526: '', order: '' });
     } catch (error) {
       console.error('Error saving fee:', error);
       alert(error.response?.data?.message || 'Failed to save fee structure');
@@ -58,14 +61,37 @@ const ManageFees = () => {
   };
 
   const handleEdit = (fee) => {
-    setIsEditing(true);
-    setCurrentId(fee._id);
-    setFormData({
+    setEditingRowId(fee._id);
+    setEditFormData({
       className: fee.className,
       fee2425: fee.fee2425,
       fee2526: fee.fee2526,
       order: fee.order || ''
     });
+  };
+
+  const handleEditChange = (e) => {
+    setEditFormData({ ...editFormData, [e.target.name]: e.target.value });
+  };
+
+  const handleInlineSave = async (id) => {
+    setSaving(true);
+    try {
+      const { data } = await api.put(`/fees/${id}`, editFormData);
+      setFees(fees.map((fee) => (fee._id === id ? data : fee)));
+      setEditingRowId(null);
+      setEditFormData({ className: '', fee2425: '', fee2526: '', order: '' });
+    } catch (error) {
+      console.error('Error updating fee:', error);
+      alert(error.response?.data?.message || 'Failed to update fee structure');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const cancelInlineEdit = () => {
+    setEditingRowId(null);
+    setEditFormData({ className: '', fee2425: '', fee2526: '', order: '' });
   };
 
   const handleDelete = async (id) => {
@@ -80,12 +106,6 @@ const ManageFees = () => {
     }
   };
 
-  const resetForm = () => {
-    setIsEditing(false);
-    setCurrentId(null);
-    setFormData({ className: '', fee2425: '', fee2526: '', order: '' });
-  };
-
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -97,25 +117,19 @@ const ManageFees = () => {
       <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 mb-8 shadow-sm">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold text-gray-700 flex items-center">
-            {isEditing ? <FaEdit className="mr-2 text-blue-600" /> : <FaPlus className="mr-2 text-green-600" />}
-            {isEditing ? 'Edit Fee Structure' : 'Add New Fee Structure'}
+            <FaPlus className="mr-2 text-green-600" /> Add New Fee Structure
           </h2>
-          {isEditing && (
-            <button onClick={resetForm} className="text-sm text-gray-500 hover:text-gray-700 underline">
-              Cancel Edit
-            </button>
-          )}
         </div>
 
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+        <form onSubmit={handleAddSubmit} className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
           <div className="md:col-span-1">
             <label className="block text-sm font-medium text-gray-700 mb-1">Class / Grade</label>
             <input 
               type="text" 
               name="className"
               required 
-              value={formData.className}
-              onChange={handleChange}
+              value={addFormData.className}
+              onChange={handleAddChange}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-green-500 focus:border-green-500"
               placeholder="e.g. Grade 1"
             />
@@ -126,8 +140,8 @@ const ManageFees = () => {
               type="number" 
               name="fee2425"
               required 
-              value={formData.fee2425}
-              onChange={handleChange}
+              value={addFormData.fee2425}
+              onChange={handleAddChange}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-green-500 focus:border-green-500"
               placeholder="0"
             />
@@ -138,8 +152,8 @@ const ManageFees = () => {
               type="number" 
               name="fee2526"
               required 
-              value={formData.fee2526}
-              onChange={handleChange}
+              value={addFormData.fee2526}
+              onChange={handleAddChange}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-green-500 focus:border-green-500"
               placeholder="0"
             />
@@ -149,8 +163,8 @@ const ManageFees = () => {
             <input 
               type="number" 
               name="order"
-              value={formData.order}
-              onChange={handleChange}
+              value={addFormData.order}
+              onChange={handleAddChange}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-green-500 focus:border-green-500"
               placeholder="e.g. 1"
             />
@@ -159,9 +173,9 @@ const ManageFees = () => {
             <button 
               type="submit" 
               disabled={saving}
-              className={`w-full font-medium py-2 px-4 rounded-lg flex items-center justify-center transition disabled:opacity-50 ${isEditing ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-green-600 hover:bg-green-700 text-white'}`}
+              className="w-full font-medium py-2 px-4 rounded-lg flex items-center justify-center transition disabled:opacity-50 bg-green-600 hover:bg-green-700 text-white"
             >
-              {saving ? 'Saving...' : (isEditing ? 'Update Fees' : 'Add Fees')}
+              {saving ? 'Saving...' : 'Add Fees'}
             </button>
           </div>
         </form>
@@ -183,23 +197,75 @@ const ManageFees = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {fees.length > 0 ? fees.map((fee) => (
                 <tr key={fee._id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">{fee.className}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">₹{fee.fee2425?.toLocaleString()}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">₹{fee.fee2526?.toLocaleString()}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
-                    <button 
-                      onClick={() => handleEdit(fee)}
-                      className="text-blue-600 hover:text-blue-900 py-1"
-                    >
-                      <FaEdit />
-                    </button>
-                    <button 
-                      onClick={() => handleDelete(fee._id)}
-                      className="text-red-600 hover:text-red-900 py-1"
-                    >
-                      <FaTrash />
-                    </button>
-                  </td>
+                  {editingRowId === fee._id ? (
+                    <>
+                      <td className="px-6 py-3 whitespace-nowrap">
+                        <input
+                          type="text"
+                          name="className"
+                          value={editFormData.className}
+                          onChange={handleEditChange}
+                          className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                        />
+                      </td>
+                      <td className="px-6 py-3 whitespace-nowrap">
+                        <input
+                          type="number"
+                          name="fee2425"
+                          value={editFormData.fee2425}
+                          onChange={handleEditChange}
+                          className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                        />
+                      </td>
+                      <td className="px-6 py-3 whitespace-nowrap">
+                        <input
+                          type="number"
+                          name="fee2526"
+                          value={editFormData.fee2526}
+                          onChange={handleEditChange}
+                          className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                        />
+                      </td>
+                      <td className="px-6 py-3 whitespace-nowrap text-right text-sm font-medium space-x-3">
+                        <button
+                          onClick={() => handleInlineSave(fee._id)}
+                          className="text-emerald-600 hover:text-emerald-800 py-1"
+                          title="Save"
+                          disabled={saving}
+                        >
+                          <FaCheck />
+                        </button>
+                        <button
+                          onClick={cancelInlineEdit}
+                          className="text-gray-500 hover:text-gray-700 py-1"
+                          title="Cancel"
+                          disabled={saving}
+                        >
+                          <FaTimes />
+                        </button>
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">{fee.className}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">₹{fee.fee2425?.toLocaleString()}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">₹{fee.fee2526?.toLocaleString()}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
+                        <button 
+                          onClick={() => handleEdit(fee)}
+                          className="text-blue-600 hover:text-blue-900 py-1"
+                        >
+                          <FaEdit />
+                        </button>
+                        <button 
+                          onClick={() => handleDelete(fee._id)}
+                          className="text-red-600 hover:text-red-900 py-1"
+                        >
+                          <FaTrash />
+                        </button>
+                      </td>
+                    </>
+                  )}
                 </tr>
               )) : (
                 <tr>
