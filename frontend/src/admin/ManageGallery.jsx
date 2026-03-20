@@ -2,6 +2,26 @@ import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import { FaTrash, FaPlus, FaImage, FaEdit, FaTimes } from 'react-icons/fa';
 
+const campusImageModules = import.meta.glob('../assets/campus*.{jpeg,jpg,png}', {
+  eager: true,
+  import: 'default',
+});
+
+const localCampusImages = Object.entries(campusImageModules)
+  .sort((a, b) => {
+    const aNum = Number((a[0].match(/campus(\d+)/i) || [])[1] || 999);
+    const bNum = Number((b[0].match(/campus(\d+)/i) || [])[1] || 999);
+    return aNum - bNum;
+  })
+  .map(([, url], index) => ({
+    _id: `local-campus-${index + 1}`,
+    imageUrl: url,
+    category: 'Campus',
+    description: `Campus Photo ${index + 1}`,
+    mediaType: 'image',
+    source: 'local',
+  }));
+
 const ManageGallery = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,9 +43,14 @@ const ManageGallery = () => {
   const fetchImages = async () => {
     try {
       const { data } = await api.get('/gallery');
-      setImages(data);
+      if (data && data.length > 0) {
+        setImages(data.map((item) => ({ ...item, source: 'api' })));
+      } else {
+        setImages(localCampusImages);
+      }
     } catch (error) {
       console.error('Error fetching gallery:', error);
+      setImages(localCampusImages);
     } finally {
       setLoading(false);
     }
@@ -180,29 +205,37 @@ const ManageGallery = () => {
                   onError={(e) => {e.target.onerror = null; e.target.src="https://via.placeholder.com/150"}}
                 />
               )}
-              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => openEditModal(img)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full"
-                    title="Edit Picture Name"
-                  >
-                    <FaEdit />
-                  </button>
-                  <button 
-                    onClick={() => handleDelete(img._id)}
-                    className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-full"
-                    title="Delete Image"
-                  >
-                    <FaTrash />
-                  </button>
+              {img.source !== 'local' && (
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => openEditModal(img)}
+                      className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full"
+                      title="Edit Picture Name"
+                    >
+                      <FaEdit />
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(img._id)}
+                      className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-full"
+                      title="Delete Image"
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="absolute bottom-0 left-0 right-0 bg-gray-900 bg-opacity-75 text-white text-xs p-1 px-2 truncate">
                 {img.description || 'Untitled'} • {img.category}
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {images.length > 0 && images[0].source === 'local' && (
+        <div className="mt-4 text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-lg p-3">
+          Showing local campus fallback images. Upload media in admin to manage (edit/delete) cloud gallery items.
         </div>
       )}
 
