@@ -52,7 +52,7 @@ const Gallery = () => {
     const fetchGallery = async () => {
       try {
         const { data } = await api.get('/gallery');
-        const activeImages = data && data.length > 0 ? data : localCampusImages;
+        const activeImages = data && data.length > 0 ? data : applyLocalMeta(localCampusImages);
         setImages(activeImages);
         const uniqueCategories = ['All', ...new Set(activeImages.map((img) => img.category || 'Campus'))];
         setCategories(uniqueCategories);
