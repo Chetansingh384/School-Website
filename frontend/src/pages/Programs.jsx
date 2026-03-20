@@ -4,6 +4,7 @@ import api from '../services/api';
 
 // Fallback images
 import campusimage from '../assets/campusimage.png';
+import campus1 from '../assets/campus1.jpeg';
 import campus7 from '../assets/campus7.jpeg';
 import campus6 from '../assets/campus6.jpeg';
 
