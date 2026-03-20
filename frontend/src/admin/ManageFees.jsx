@@ -205,7 +205,7 @@ const ManageFees = () => {
                           name="className"
                           value={editFormData.className}
                           onChange={handleEditChange}
-                          className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                          className="w-full border border-gray-300 rounded px-2 py-1 text-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                       </td>
                       <td className="px-6 py-3 whitespace-nowrap">
@@ -214,7 +214,7 @@ const ManageFees = () => {
                           name="fee2425"
                           value={editFormData.fee2425}
                           onChange={handleEditChange}
-                          className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                          className="w-full border border-gray-300 rounded px-2 py-1 text-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                       </td>
                       <td className="px-6 py-3 whitespace-nowrap">
@@ -223,7 +223,7 @@ const ManageFees = () => {
                           name="fee2526"
                           value={editFormData.fee2526}
                           onChange={handleEditChange}
-                          className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                          className="w-full border border-gray-300 rounded px-2 py-1 text-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                       </td>
                       <td className="px-6 py-3 whitespace-nowrap text-right text-sm font-medium space-x-3">
