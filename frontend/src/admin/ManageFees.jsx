@@ -2,15 +2,27 @@ import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import { FaMoneyBillWave, FaTrash, FaPlus, FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
 
+const getCurrentAcademicYear = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const startYear = month >= 3 ? year : year - 1;
+  const endYear = (startYear + 1).toString().slice(-2);
+  return `${startYear}-${endYear}`;
+};
+
+const toDisplayAmount = (value) => Number(value || 0).toLocaleString('en-IN');
+
 const ManageFees = () => {
   const [fees, setFees] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedYear, setSelectedYear] = useState(getCurrentAcademicYear());
   
   // Add Form State
   const [addFormData, setAddFormData] = useState({
     className: '',
-    fee2425: '',
-    fee2526: '',
+    year: getCurrentAcademicYear(),
+    feeAmount: '',
     order: ''
   });
 
@@ -18,8 +30,8 @@ const ManageFees = () => {
   const [editingRowId, setEditingRowId] = useState(null);
   const [editFormData, setEditFormData] = useState({
     className: '',
-    fee2425: '',
-    fee2526: '',
+    year: getCurrentAcademicYear(),
+    feeAmount: '',
     order: ''
   });
 
@@ -51,7 +63,8 @@ const ManageFees = () => {
     try {
       const { data } = await api.post('/fees', addFormData);
       setFees([...fees, data]);
-      setAddFormData({ className: '', fee2425: '', fee2526: '', order: '' });
+      setSelectedYear(addFormData.year);
+      setAddFormData({ className: '', year: addFormData.year, feeAmount: '', order: '' });
     } catch (error) {
       console.error('Error saving fee:', error);
       alert(error.response?.data?.message || 'Failed to save fee structure');
@@ -61,11 +74,12 @@ const ManageFees = () => {
   };
 
   const handleEdit = (fee) => {
+    const rowAmount = fee.feeAmount ?? fee.fee2526 ?? fee.fee2425 ?? '';
     setEditingRowId(fee._id);
     setEditFormData({
       className: fee.className,
-      fee2425: fee.fee2425,
-      fee2526: fee.fee2526,
+      year: fee.year || selectedYear,
+      feeAmount: rowAmount,
       order: fee.order || ''
     });
   };
@@ -80,7 +94,7 @@ const ManageFees = () => {
       const { data } = await api.put(`/fees/${id}`, editFormData);
       setFees(fees.map((fee) => (fee._id === id ? data : fee)));
       setEditingRowId(null);
-      setEditFormData({ className: '', fee2425: '', fee2526: '', order: '' });
+      setEditFormData({ className: '', year: selectedYear, feeAmount: '', order: '' });
     } catch (error) {
       console.error('Error updating fee:', error);
       alert(error.response?.data?.message || 'Failed to update fee structure');
@@ -91,7 +105,7 @@ const ManageFees = () => {
 
   const cancelInlineEdit = () => {
     setEditingRowId(null);
-    setEditFormData({ className: '', fee2425: '', fee2526: '', order: '' });
+    setEditFormData({ className: '', year: selectedYear, feeAmount: '', order: '' });
   };
 
   const handleDelete = async (id) => {
@@ -105,6 +119,11 @@ const ManageFees = () => {
       }
     }
   };
+
+  const visibleFees = fees.filter((fee) => {
+    const rowYear = fee.year || selectedYear;
+    return rowYear === selectedYear;
+  });
 
   return (
     <div>
@@ -135,24 +154,24 @@ const ManageFees = () => {
             />
           </div>
           <div className="md:col-span-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Fee 2024-25 (₹)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Academic Year</label>
             <input 
-              type="number" 
-              name="fee2425"
+              type="text"
+              name="year"
               required 
-              value={addFormData.fee2425}
+              value={addFormData.year}
               onChange={handleAddChange}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-green-500 focus:border-green-500"
-              placeholder="0"
+              placeholder="e.g. 2026-27"
             />
           </div>
           <div className="md:col-span-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Fee 2025-26 (₹)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Fee Amount (₹)</label>
             <input 
               type="number" 
-              name="fee2526"
+              name="feeAmount"
               required 
-              value={addFormData.fee2526}
+              value={addFormData.feeAmount}
               onChange={handleAddChange}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-green-500 focus:border-green-500"
               placeholder="0"
@@ -185,17 +204,26 @@ const ManageFees = () => {
         <div className="text-center py-10 text-gray-500">Loading fee structures...</div>
       ) : (
         <div className="overflow-x-auto bg-white rounded-lg shadow-sm border border-gray-200">
+          <div className="px-6 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
+            <p className="text-sm font-semibold text-gray-700">Showing Fee Structure for: <span className="text-blue-700">{selectedYear}</span></p>
+            <input
+              type="text"
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(e.target.value)}
+              className="border border-gray-300 rounded px-3 py-1.5 text-sm text-gray-800 bg-white"
+              placeholder="e.g. 2026-27"
+            />
+          </div>
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-blue-900">
               <tr>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Class / Grade</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Fee 2024-25 (₹)</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Fee 2025-26 (₹)</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Fee ({selectedYear})</th>
                 <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-white uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {fees.length > 0 ? fees.map((fee) => (
+              {visibleFees.length > 0 ? visibleFees.map((fee) => (
                 <tr key={fee._id} className="hover:bg-gray-50">
                   {editingRowId === fee._id ? (
                     <>
@@ -211,17 +239,8 @@ const ManageFees = () => {
                       <td className="px-6 py-3 whitespace-nowrap">
                         <input
                           type="number"
-                          name="fee2425"
-                          value={editFormData.fee2425}
-                          onChange={handleEditChange}
-                          className="w-full border border-gray-300 rounded px-2 py-1 text-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </td>
-                      <td className="px-6 py-3 whitespace-nowrap">
-                        <input
-                          type="number"
-                          name="fee2526"
-                          value={editFormData.fee2526}
+                          name="feeAmount"
+                          value={editFormData.feeAmount}
                           onChange={handleEditChange}
                           className="w-full border border-gray-300 rounded px-2 py-1 text-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
@@ -248,8 +267,7 @@ const ManageFees = () => {
                   ) : (
                     <>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">{fee.className}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">₹{fee.fee2425?.toLocaleString()}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">₹{fee.fee2526?.toLocaleString()}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">₹{toDisplayAmount(fee.feeAmount ?? fee.fee2526 ?? fee.fee2425)}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
                         <button 
                           onClick={() => handleEdit(fee)}
@@ -269,8 +287,8 @@ const ManageFees = () => {
                 </tr>
               )) : (
                 <tr>
-                  <td colSpan="5" className="px-6 py-10 text-center text-gray-500">
-                    No fee structures found. Add one above!
+                  <td colSpan="3" className="px-6 py-10 text-center text-gray-500">
+                    No fee structures found for {selectedYear}. Add one above!
                   </td>
                 </tr>
               )}

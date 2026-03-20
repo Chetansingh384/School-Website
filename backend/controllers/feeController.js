@@ -1,5 +1,14 @@
 const admin = require('../config/firebase');
 
+const getCurrentAcademicYear = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const startYear = month >= 3 ? year : year - 1;
+  const endYear = (startYear + 1).toString().slice(-2);
+  return `${startYear}-${endYear}`;
+};
+
 // Utility to get firestore db safely
 const getDb = () => {
   if (admin.apps.length > 0) {
@@ -31,17 +40,22 @@ const getFees = async (req, res) => {
 // @access  Private
 const addFee = async (req, res) => {
   try {
-    const { className, fee2425, fee2526, order } = req.body;
+    const { className, year, feeAmount, fee2425, fee2526, order } = req.body;
     
     if (!className) {
       return res.status(400).json({ message: 'Class name is required' });
     }
 
+    const normalizedFeeAmount = feeAmount ?? fee2526 ?? fee2425 ?? '0';
+
     const db = getDb();
     const feeDoc = await db.collection('fees').add({
       className,
-      fee2425: fee2425 || '0',
-      fee2526: fee2526 || '0',
+      year: year || getCurrentAcademicYear(),
+      feeAmount: normalizedFeeAmount,
+      // Keep old fields in sync for backward compatibility
+      fee2425: normalizedFeeAmount,
+      fee2526: normalizedFeeAmount,
       order: Number(order) || 0,
       createdAt: admin.firestore.FieldValue.serverTimestamp()
     });
@@ -60,7 +74,7 @@ const addFee = async (req, res) => {
 // @access  Private
 const updateFee = async (req, res) => {
   try {
-    const { className, fee2425, fee2526, order } = req.body;
+    const { className, year, feeAmount, fee2425, fee2526, order } = req.body;
     const { id } = req.params;
 
     const db = getDb();
@@ -71,11 +85,17 @@ const updateFee = async (req, res) => {
       return res.status(404).json({ message: 'Fee record not found' });
     }
 
+    const existing = doc.data();
+    const resolvedFeeAmount = feeAmount ?? fee2526 ?? fee2425 ?? existing.feeAmount ?? existing.fee2526 ?? existing.fee2425 ?? '0';
+
     await feeRef.update({
-      className: className || doc.data().className,
-      fee2425: fee2425 !== undefined ? fee2425 : doc.data().fee2425,
-      fee2526: fee2526 !== undefined ? fee2526 : doc.data().fee2526,
-      order: order !== undefined ? Number(order) : (doc.data().order || 0),
+      className: className || existing.className,
+      year: year || existing.year || getCurrentAcademicYear(),
+      feeAmount: resolvedFeeAmount,
+      // Keep old fields in sync for backward compatibility
+      fee2425: resolvedFeeAmount,
+      fee2526: resolvedFeeAmount,
+      order: order !== undefined ? Number(order) : (existing.order || 0),
       updatedAt: admin.firestore.FieldValue.serverTimestamp()
     });
 
