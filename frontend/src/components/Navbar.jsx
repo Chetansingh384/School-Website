@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaBars, FaTimes, FaGraduationCap, FaSun, FaMoon } from 'react-icons/fa';
-import { useTheme } from '../context/ThemeContext';
+import { FaBars, FaTimes, FaGraduationCap } from 'react-icons/fa';
 import logoImg from '../assets/logo1.jpeg';
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const { isDark, toggleTheme } = useTheme();
 
   const handleNav = () => setNav(!nav);
   const closeNav = () => setNav(false);
@@ -75,7 +73,7 @@ const Navbar = () => {
                       isActive 
                         ? 'bg-blue-600/10 text-blue-600 shadow-sm backdrop-blur-sm' 
                         : scrolled 
-                          ? (isDark ? 'text-slate-200 hover:text-white hover:bg-white/10' : 'text-slate-800 hover:text-blue-700 hover:bg-blue-50')
+                          ? 'text-slate-200 hover:text-white hover:bg-white/10'
                           : 'text-white/95 hover:text-white hover:bg-white/10'
                     }`}
                   >
@@ -84,19 +82,6 @@ const Navbar = () => {
                 </li>
               );
             })}
-            <li className="pl-4 flex items-center space-x-4">
-              <button
-                onClick={toggleTheme}
-                className={`p-2 rounded-full transition-all duration-300 ${
-                  scrolled 
-                    ? 'bg-gray-100 text-gray-800 hover:bg-gray-200' 
-                    : 'bg-white/10 text-white hover:bg-white/20'
-                }`}
-                aria-label="Toggle theme"
-              >
-                {isDark ? <FaSun size={20} /> : <FaMoon size={20} />}
-              </button>
-            </li>
           </ul>
 
           {/* Hamburger Icon */}
@@ -105,7 +90,7 @@ const Navbar = () => {
               onClick={handleNav} 
               className={`p-2 rounded-md focus:outline-none transition-colors ${
                 scrolled 
-                  ? (isDark ? 'text-white hover:bg-white/10' : 'text-gray-800 hover:bg-gray-100') 
+                  ? 'text-white hover:bg-white/10' 
                   : 'text-white hover:bg-white/10'
               }`}
             >
@@ -146,17 +131,6 @@ const Navbar = () => {
                 </li>
               );
             })}
-            <li className="pt-8 space-y-4">
-              <div className="flex items-center justify-between px-4 py-3 rounded-2xl bg-white/10 text-white">
-                <span className="font-medium">Switch Theme</span>
-                <button
-                  onClick={toggleTheme}
-                  className="p-3 rounded-full bg-blue-500 text-white shadow-lg"
-                >
-                  {isDark ? <FaSun size={24} /> : <FaMoon size={24} />}
-                </button>
-              </div>
-            </li>
           </ul>
         </div>
       </div>
