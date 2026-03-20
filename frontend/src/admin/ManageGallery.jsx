@@ -153,13 +153,14 @@ const ManageGallery = () => {
             <select 
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
+              style={{ color: '#111827', backgroundColor: '#ffffff' }}
             >
-              <option value="Events">Events</option>
-              <option value="Sports">Sports</option>
-              <option value="Class Activities">Class Activities</option>
-              <option value="Annual Day">Annual Day</option>
-              <option value="Other">Other</option>
+              <option value="Events" style={{ color: '#111827', backgroundColor: '#ffffff' }}>Events</option>
+              <option value="Sports" style={{ color: '#111827', backgroundColor: '#ffffff' }}>Sports</option>
+              <option value="Class Activities" style={{ color: '#111827', backgroundColor: '#ffffff' }}>Class Activities</option>
+              <option value="Annual Day" style={{ color: '#111827', backgroundColor: '#ffffff' }}>Annual Day</option>
+              <option value="Other" style={{ color: '#111827', backgroundColor: '#ffffff' }}>Other</option>
             </select>
           </div>
           <div className="col-span-1 md:col-span-1">
@@ -269,13 +270,14 @@ const ManageGallery = () => {
                 <select
                   value={editCategory}
                   onChange={(e) => setEditCategory(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
+                  style={{ color: '#111827', backgroundColor: '#ffffff' }}
                 >
-                  <option value="Events">Events</option>
-                  <option value="Sports">Sports</option>
-                  <option value="Class Activities">Class Activities</option>
-                  <option value="Annual Day">Annual Day</option>
-                  <option value="Other">Other</option>
+                  <option value="Events" style={{ color: '#111827', backgroundColor: '#ffffff' }}>Events</option>
+                  <option value="Sports" style={{ color: '#111827', backgroundColor: '#ffffff' }}>Sports</option>
+                  <option value="Class Activities" style={{ color: '#111827', backgroundColor: '#ffffff' }}>Class Activities</option>
+                  <option value="Annual Day" style={{ color: '#111827', backgroundColor: '#ffffff' }}>Annual Day</option>
+                  <option value="Other" style={{ color: '#111827', backgroundColor: '#ffffff' }}>Other</option>
                 </select>
               </div>
 
