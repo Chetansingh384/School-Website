@@ -21,6 +21,26 @@ const localCampusImages = Object.entries(campusImageModules)
     mediaType: 'image',
   }));
 
+const LOCAL_GALLERY_META_KEY = 'localGalleryMeta';
+
+const applyLocalMeta = (items) => {
+  try {
+    const raw = localStorage.getItem(LOCAL_GALLERY_META_KEY);
+    const meta = raw ? JSON.parse(raw) : {};
+    return items.map((item) => {
+      const saved = meta[item._id];
+      if (!saved) return item;
+      return {
+        ...item,
+        description: saved.description ?? item.description,
+        category: saved.category ?? item.category,
+      };
+    });
+  } catch {
+    return items;
+  }
+};
+
 const Gallery = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,8 +58,9 @@ const Gallery = () => {
         setCategories(uniqueCategories);
       } catch (error) {
         console.error('Error fetching gallery, using local images:', error);
-        setImages(localCampusImages);
-        setCategories(['All', ...new Set(localCampusImages.map((img) => img.category))]);
+        const localWithMeta = applyLocalMeta(localCampusImages);
+        setImages(localWithMeta);
+        setCategories(['All', ...new Set(localWithMeta.map((img) => img.category))]);
       } finally {
         setLoading(false);
       }

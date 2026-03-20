@@ -22,6 +22,34 @@ const localCampusImages = Object.entries(campusImageModules)
     source: 'local',
   }));
 
+const LOCAL_GALLERY_META_KEY = 'localGalleryMeta';
+
+const getLocalGalleryMeta = () => {
+  try {
+    const raw = localStorage.getItem(LOCAL_GALLERY_META_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+};
+
+const setLocalGalleryMeta = (meta) => {
+  localStorage.setItem(LOCAL_GALLERY_META_KEY, JSON.stringify(meta));
+};
+
+const applyLocalMeta = (items) => {
+  const meta = getLocalGalleryMeta();
+  return items.map((item) => {
+    const saved = meta[item._id];
+    if (!saved) return item;
+    return {
+      ...item,
+      description: saved.description ?? item.description,
+      category: saved.category ?? item.category,
+    };
+  });
+};
+
 const ManageGallery = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -46,11 +74,11 @@ const ManageGallery = () => {
       if (data && data.length > 0) {
         setImages(data.map((item) => ({ ...item, source: 'api' })));
       } else {
-        setImages(localCampusImages);
+        setImages(applyLocalMeta(localCampusImages));
       }
     } catch (error) {
       console.error('Error fetching gallery:', error);
-      setImages(localCampusImages);
+      setImages(applyLocalMeta(localCampusImages));
     } finally {
       setLoading(false);
     }
@@ -107,6 +135,25 @@ const ManageGallery = () => {
   const handleSaveEdit = async (e) => {
     e.preventDefault();
     if (!editingImage) return;
+
+    if (editingImage.source === 'local') {
+      const meta = getLocalGalleryMeta();
+      meta[editingImage._id] = {
+        description: editDescription,
+        category: editCategory,
+      };
+      setLocalGalleryMeta(meta);
+
+      setImages((prev) =>
+        prev.map((img) =>
+          img._id === editingImage._id
+            ? { ...img, description: editDescription, category: editCategory }
+            : img
+        )
+      );
+      setEditingImage(null);
+      return;
+    }
 
     setSavingEdit(true);
     try {
@@ -206,16 +253,16 @@ const ManageGallery = () => {
                   onError={(e) => {e.target.onerror = null; e.target.src="https://via.placeholder.com/150"}}
                 />
               )}
-              {img.source !== 'local' && (
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => openEditModal(img)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full"
-                      title="Edit Picture Name"
-                    >
-                      <FaEdit />
-                    </button>
+              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => openEditModal(img)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full"
+                    title="Edit Picture Name"
+                  >
+                    <FaEdit />
+                  </button>
+                  {img.source !== 'local' && (
                     <button 
                       onClick={() => handleDelete(img._id)}
                       className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-full"
@@ -223,9 +270,9 @@ const ManageGallery = () => {
                     >
                       <FaTrash />
                     </button>
-                  </div>
+                  )}
                 </div>
-              )}
+              </div>
               <div className="absolute bottom-0 left-0 right-0 bg-gray-900 bg-opacity-75 text-white text-xs p-1 px-2 truncate">
                 {img.description || 'Untitled'} • {img.category}
               </div>
