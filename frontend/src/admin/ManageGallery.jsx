@@ -305,9 +305,12 @@ const ManageGallery = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Picture Name</label>
                 <input
                   type="text"
+                  name="pictureName"
+                  autoFocus
                   value={editDescription}
                   onChange={(e) => setEditDescription(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 caret-blue-600 placeholder:text-gray-400"
+                  style={{ color: '#111827', backgroundColor: '#ffffff' }}
                   placeholder="Enter picture name"
                 />
               </div>
