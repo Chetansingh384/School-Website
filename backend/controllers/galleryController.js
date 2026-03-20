@@ -41,14 +41,20 @@ const addGalleryItem = async (req, res) => {
     // Determine resource type based on mimetype
     const resourceType = req.file.mimetype.startsWith('video/') ? 'video' : 'image';
 
+    const cloudConfig = cloudinary.config();
+    if (!cloudConfig.cloud_name || !cloudConfig.api_key || !cloudConfig.api_secret) {
+      return res.status(500).json({
+        message: 'Cloudinary credentials missing on server. Add CLOUDINARY_URL or CLOUDINARY_CLOUD_NAME/CLOUDINARY_API_KEY/CLOUDINARY_API_SECRET.',
+      });
+    }
+
     // Upload to Cloudinary using a stream
     const streamUpload = (req) => {
       return new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
           { 
             folder: 'school_gallery', 
-            resource_type: resourceType,
-            upload_preset: 'School Website'
+            resource_type: resourceType
           },
           (error, result) => {
             if (result) {
