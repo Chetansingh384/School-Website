@@ -9,17 +9,26 @@ const getDb = () => {
 };
 
 const assetsDir = path.join(__dirname, '../frontend/src/assets');
-const imagePattern = /^campus(\d+)\.(jpe?g|png|webp)$/i;
+const campusPattern = /^campus(\d+)\.(jpe?g|png|webp)$/i;
+const galleryPattern = /^gallery-(\d+)\.(jpe?g|png|webp)$/i;
 
-const getCampusFiles = () => {
+const getMigratableFiles = () => {
   if (!fs.existsSync(assetsDir)) return [];
 
   return fs
     .readdirSync(assetsDir)
-    .filter((file) => imagePattern.test(file))
+    .filter((file) => campusPattern.test(file) || galleryPattern.test(file))
     .sort((a, b) => {
-      const aNum = Number((a.match(imagePattern) || [])[1] || 9999);
-      const bNum = Number((b.match(imagePattern) || [])[1] || 9999);
+      const getOrder = (name) => {
+        const campus = name.match(campusPattern);
+        if (campus) return Number(campus[1] || 9999);
+        const gallery = name.match(galleryPattern);
+        if (gallery) return 10000 + Number(gallery[1] || 9999);
+        return 99999;
+      };
+
+      const aNum = getOrder(a);
+      const bNum = getOrder(b);
       return aNum - bNum;
     });
 };
@@ -31,22 +40,28 @@ async function run() {
   }
 
   const db = getDb();
-  const files = getCampusFiles();
+  const files = getMigratableFiles();
 
   if (!files.length) {
-    console.log('No campus image files found in frontend/src/assets.');
+    console.log('No migratable image files found in frontend/src/assets.');
     return;
   }
 
-  console.log(`Found ${files.length} campus images. Starting upload...`);
+  console.log(`Found ${files.length} images. Starting upload...`);
 
   let uploaded = 0;
   let skipped = 0;
 
   for (const file of files) {
     const absolutePath = path.join(assetsDir, file);
-    const imageNum = Number((file.match(imagePattern) || [])[1] || 0);
-    const description = `Campus Photo ${imageNum}`;
+    const campusMatch = file.match(campusPattern);
+    const galleryMatch = file.match(galleryPattern);
+
+    const isCampus = Boolean(campusMatch);
+    const imageNum = Number((campusMatch || galleryMatch || [])[1] || 0);
+    const description = isCampus ? `Campus Photo ${imageNum}` : `Gallery Photo ${imageNum}`;
+    const category = isCampus ? 'Campus' : 'Events';
+    const publicId = isCampus ? `campus-${imageNum}` : `gallery-${imageNum}`;
 
     // Skip if this source file is already mapped.
     const existing = await db
@@ -64,7 +79,7 @@ async function run() {
     const result = await cloudinary.uploader.upload(absolutePath, {
       folder: 'school_gallery',
       resource_type: 'image',
-      public_id: `campus-${imageNum}`,
+      public_id: publicId,
       overwrite: true,
     });
 
@@ -72,7 +87,7 @@ async function run() {
       imageUrl: result.secure_url,
       publicId: result.public_id,
       mediaType: 'image',
-      category: 'Campus',
+      category,
       description,
       sourceFile: file,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
