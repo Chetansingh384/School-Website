@@ -1,13 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FaHistory, FaEye, FaTrophy, FaCheckCircle, FaGlobe, FaBrain, FaLeaf, FaPlay, FaPause } from 'react-icons/fa';
-import aboutImg from '../assets/about.jpeg';
 import campusvid from '../assets/campusvid.mp4';
 import api from '../services/api';
 
-const fallbackImages = [aboutImg];
+const isImageReachable = (url) =>
+  new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = url;
+  });
 
 const About = () => {
-  const [heroImages, setHeroImages] = useState(fallbackImages);
+  const [heroImages, setHeroImages] = useState([]);
   const [heroVideo, setHeroVideo] = useState(campusvid);
   const [currentImage, setCurrentImage] = useState(0);
   const videoRef = useRef(null);
@@ -28,20 +33,30 @@ const About = () => {
     const fetchMedia = async () => {
       try {
         const { data } = await api.get('/gallery');
-        const liveImages = data.filter(item => item.mediaType !== 'video').map(item => item.imageUrl);
+        const liveImages = (data || [])
+          .filter(item => item.mediaType !== 'video')
+          .map(item => item.imageUrl)
+          .filter(Boolean);
         const liveVideos = data.filter(item => item.mediaType === 'video');
 
         if (liveImages.length > 0) {
-          setHeroImages(liveImages.slice(0, 5));
+          const checks = await Promise.all(liveImages.slice(0, 10).map((url) => isImageReachable(url)));
+          const validImages = liveImages.slice(0, 10).filter((_, idx) => checks[idx]);
+          setHeroImages(validImages.slice(0, 5));
+        } else {
+          setHeroImages([]);
         }
         if (liveVideos.length > 0) {
           setHeroVideo(liveVideos[0].imageUrl);
         }
       } catch (error) {
         console.error("Error fetching live media", error);
+        setHeroImages([]);
       }
     };
     fetchMedia();
+
+    if (heroImages.length <= 1) return undefined;
 
     const timer = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % heroImages.length);
