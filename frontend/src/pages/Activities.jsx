@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import { FaRunning, FaArrowRight } from 'react-icons/fa';
-import campus20 from '../assets/campus20.jpeg';
 
 const Activities = () => {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
+  const heroImage = activities[0]?.imageUrl || 'https://via.placeholder.com/1600x900?text=Activities';
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -28,7 +28,7 @@ const Activities = () => {
       <div className="relative pt-32 pb-24 overflow-hidden border-b-4 border-orange-500">
         <div className="absolute inset-0 z-0">
           <img 
-            src={campus20} 
+            src={heroImage} 
             alt="Sports Background" 
             className="w-full h-full object-cover opacity-40 mix-blend-overlay"
           />

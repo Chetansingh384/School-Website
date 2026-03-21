@@ -2,54 +2,6 @@ import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import { FaTrash, FaPlus, FaImage, FaEdit, FaTimes } from 'react-icons/fa';
 
-const campusImageModules = import.meta.glob('../assets/campus*.{jpeg,jpg,png}', {
-  eager: true,
-  import: 'default',
-});
-
-const localCampusImages = Object.entries(campusImageModules)
-  .sort((a, b) => {
-    const aNum = Number((a[0].match(/campus(\d+)/i) || [])[1] || 999);
-    const bNum = Number((b[0].match(/campus(\d+)/i) || [])[1] || 999);
-    return aNum - bNum;
-  })
-  .map(([, url], index) => ({
-    _id: `local-campus-${index + 1}`,
-    imageUrl: url,
-    category: 'Campus',
-    description: `Campus Photo ${index + 1}`,
-    mediaType: 'image',
-    source: 'local',
-  }));
-
-const LOCAL_GALLERY_META_KEY = 'localGalleryMeta';
-
-const getLocalGalleryMeta = () => {
-  try {
-    const raw = localStorage.getItem(LOCAL_GALLERY_META_KEY);
-    return raw ? JSON.parse(raw) : {};
-  } catch {
-    return {};
-  }
-};
-
-const setLocalGalleryMeta = (meta) => {
-  localStorage.setItem(LOCAL_GALLERY_META_KEY, JSON.stringify(meta));
-};
-
-const applyLocalMeta = (items) => {
-  const meta = getLocalGalleryMeta();
-  return items.map((item) => {
-    const saved = meta[item._id];
-    if (!saved) return item;
-    return {
-      ...item,
-      description: saved.description ?? item.description,
-      category: saved.category ?? item.category,
-    };
-  });
-};
-
 const ManageGallery = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -71,14 +23,10 @@ const ManageGallery = () => {
   const fetchImages = async () => {
     try {
       const { data } = await api.get('/gallery');
-      if (data && data.length > 0) {
-        setImages(data.map((item) => ({ ...item, source: 'api' })));
-      } else {
-        setImages(applyLocalMeta(localCampusImages));
-      }
+      setImages(data || []);
     } catch (error) {
       console.error('Error fetching gallery:', error);
-      setImages(applyLocalMeta(localCampusImages));
+      setImages([]);
     } finally {
       setLoading(false);
     }
@@ -135,25 +83,6 @@ const ManageGallery = () => {
   const handleSaveEdit = async (e) => {
     e.preventDefault();
     if (!editingImage) return;
-
-    if (editingImage.source === 'local') {
-      const meta = getLocalGalleryMeta();
-      meta[editingImage._id] = {
-        description: editDescription,
-        category: editCategory,
-      };
-      setLocalGalleryMeta(meta);
-
-      setImages((prev) =>
-        prev.map((img) =>
-          img._id === editingImage._id
-            ? { ...img, description: editDescription, category: editCategory }
-            : img
-        )
-      );
-      setEditingImage(null);
-      return;
-    }
 
     setSavingEdit(true);
     try {
@@ -262,15 +191,13 @@ const ManageGallery = () => {
                   >
                     <FaEdit />
                   </button>
-                  {img.source !== 'local' && (
-                    <button 
-                      onClick={() => handleDelete(img._id)}
-                      className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-full"
-                      title="Delete Image"
-                    >
-                      <FaTrash />
-                    </button>
-                  )}
+                  <button 
+                    onClick={() => handleDelete(img._id)}
+                    className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-full"
+                    title="Delete Image"
+                  >
+                    <FaTrash />
+                  </button>
                 </div>
               </div>
               <div className="absolute bottom-0 left-0 right-0 bg-gray-900 bg-opacity-75 text-white text-xs p-1 px-2 truncate">
@@ -278,12 +205,6 @@ const ManageGallery = () => {
               </div>
             </div>
           ))}
-        </div>
-      )}
-
-      {images.length > 0 && images[0].source === 'local' && (
-        <div className="mt-4 text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-lg p-3">
-          Showing local campus fallback images. Upload media in admin to manage (edit/delete) cloud gallery items.
         </div>
       )}
 

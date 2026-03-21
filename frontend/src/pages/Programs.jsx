@@ -2,22 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { FaGraduationCap, FaSpinner } from 'react-icons/fa';
 import api from '../services/api';
 
-// Fallback images
-import campusimage from '../assets/campusimage.png';
-import campus1 from '../assets/campus1.jpeg';
-import campus7 from '../assets/campus7.jpeg';
-import campus6 from '../assets/campus6.jpeg';
-
 const Programs = () => {
   const [programs, setPrograms] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Fallback Data
   const fallbackPrograms = [
-    { _id: 'f1', title: 'Yoga and Mindfulness Programs', description: 'Enhance your physical and mental well-being with our expert-led yoga and mindfulness sessions.', imageUrl: campus1 },
-    { _id: 'f2', title: 'Environmental Programs', description: 'Engage in sustainability initiatives and learn about environmental conservation.', imageUrl: campus7 },
-    { _id: 'f3', title: 'Cultural Programs', description: 'Celebrate diversity with various cultural events, arts, and traditions.', imageUrl: campus6 }
+    { _id: 'f1', title: 'Yoga and Mindfulness Programs', description: 'Enhance your physical and mental well-being with our expert-led yoga and mindfulness sessions.', imageUrl: 'https://via.placeholder.com/640x420?text=Yoga+Program' },
+    { _id: 'f2', title: 'Environmental Programs', description: 'Engage in sustainability initiatives and learn about environmental conservation.', imageUrl: 'https://via.placeholder.com/640x420?text=Environmental+Program' },
+    { _id: 'f3', title: 'Cultural Programs', description: 'Celebrate diversity with various cultural events, arts, and traditions.', imageUrl: 'https://via.placeholder.com/640x420?text=Cultural+Program' }
   ];
+
+  const headerImage = programs[0]?.imageUrl || 'https://via.placeholder.com/1600x900?text=Programs';
 
   useEffect(() => {
     const fetchPrograms = async () => {
@@ -44,7 +40,7 @@ const Programs = () => {
         {/* Beautiful Image Background with Overlay */}
         <div className="absolute inset-0 z-0">
           <img 
-            src={campusimage} 
+            src={headerImage} 
             alt="Campus Background" 
             className="w-full h-full object-cover opacity-55"
           />

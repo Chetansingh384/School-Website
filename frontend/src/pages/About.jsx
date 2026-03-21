@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FaHistory, FaEye, FaTrophy, FaCheckCircle, FaGlobe, FaBrain, FaLeaf, FaPlay, FaPause } from 'react-icons/fa';
 import aboutImg from '../assets/about.jpeg';
-import campus1 from '../assets/campus1.jpeg';
-import campus3 from '../assets/campus3.jpeg';
-import campus4 from '../assets/campus4.jpeg';
-import campus5 from '../assets/campus5.jpeg';
 import campusvid from '../assets/campusvid.mp4';
 import api from '../services/api';
 
-const fallbackImages = [aboutImg, campus1, campus3, campus4, campus5];
+const fallbackImages = [aboutImg];
 
 const About = () => {
   const [heroImages, setHeroImages] = useState(fallbackImages);

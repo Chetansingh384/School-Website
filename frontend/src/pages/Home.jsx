@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
-import campusImg from '../assets/campusimage.png';
+import campusImg from '../assets/about.jpeg';
 import principalMessageImg from '../assets/principal-message.png';
 import { FaGraduationCap, FaBookOpen, FaLaptopCode, FaBasketballBall, FaArrowRight, FaAward, FaChalkboardTeacher, FaUsers } from 'react-icons/fa';
 

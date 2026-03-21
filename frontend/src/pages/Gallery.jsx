@@ -2,65 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { FaImages, FaTimes, FaFilter, FaSearchPlus } from 'react-icons/fa';
 import api from '../services/api';
 
-const campusImageModules = import.meta.glob('../assets/campus*.{jpeg,jpg,png}', {
-  eager: true,
-  import: 'default',
-});
-
-const localCampusImages = Object.entries(campusImageModules)
-  .sort((a, b) => {
-    const aNum = Number((a[0].match(/campus(\d+)/i) || [])[1] || 999);
-    const bNum = Number((b[0].match(/campus(\d+)/i) || [])[1] || 999);
-    return aNum - bNum;
-  })
-  .map(([, url], index) => ({
-    _id: `local-campus-${index + 1}`,
-    imageUrl: url,
-    category: 'Campus',
-    description: `Campus Photo ${index + 1}`,
-    mediaType: 'image',
-  }));
-
-const LOCAL_GALLERY_META_KEY = 'localGalleryMeta';
-
-const applyLocalMeta = (items) => {
-  try {
-    const raw = localStorage.getItem(LOCAL_GALLERY_META_KEY);
-    const meta = raw ? JSON.parse(raw) : {};
-    return items.map((item) => {
-      const saved = meta[item._id];
-      if (!saved) return item;
-      return {
-        ...item,
-        description: saved.description ?? item.description,
-        category: saved.category ?? item.category,
-      };
-    });
-  } catch {
-    return items;
-  }
-};
-
 const Gallery = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('All');
-  const [categories, setCategories] = useState(['All', 'Campus']);
+  const [categories, setCategories] = useState(['All']);
   const [fullscreenImage, setFullscreenImage] = useState(null);
 
   useEffect(() => {
     const fetchGallery = async () => {
       try {
         const { data } = await api.get('/gallery');
-        const activeImages = data && data.length > 0 ? data : applyLocalMeta(localCampusImages);
+        const activeImages = data || [];
         setImages(activeImages);
         const uniqueCategories = ['All', ...new Set(activeImages.map((img) => img.category || 'Campus'))];
         setCategories(uniqueCategories);
       } catch (error) {
-        console.error('Error fetching gallery, using local images:', error);
-        const localWithMeta = applyLocalMeta(localCampusImages);
-        setImages(localWithMeta);
-        setCategories(['All', ...new Set(localWithMeta.map((img) => img.category))]);
+        console.error('Error fetching gallery:', error);
+        setImages([]);
+        setCategories(['All']);
       } finally {
         setLoading(false);
       }

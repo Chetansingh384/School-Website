@@ -5,7 +5,7 @@ import api from '../services/api';
 
 import next_icon from '../assets/next-icon.png';
 import back_icon from '../assets/back-icon.png';
-import campusImg from '../assets/campusimage.png';
+import campusImg from '../assets/about.jpeg';
 
 const Faculty = () => {
   const [facultyMembers, setFacultyMembers] = useState([]);
