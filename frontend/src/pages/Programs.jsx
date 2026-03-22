@@ -34,7 +34,10 @@ const Programs = () => {
     return aboutImg;
   };
 
-  const headerImage = getProgramImage(programs[0]);
+  const headerImage =
+    campusBySourceFile['campus11.jpeg'] ||
+    campusBySourceFile['campus10.jpeg'] ||
+    aboutImg;
 
   useEffect(() => {
     const fetchPrograms = async () => {
