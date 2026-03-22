@@ -5,27 +5,47 @@ import aboutImg from '../assets/about.jpeg';
 
 const Programs = () => {
   const [programs, setPrograms] = useState([]);
+  const [campusPool, setCampusPool] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Fallback Data
   const fallbackPrograms = [
-    { _id: 'f1', title: 'Yoga and Mindfulness Programs', description: 'Enhance your physical and mental well-being with our expert-led yoga and mindfulness sessions.', imageUrl: aboutImg },
-    { _id: 'f2', title: 'Environmental Programs', description: 'Engage in sustainability initiatives and learn about environmental conservation.', imageUrl: aboutImg },
-    { _id: 'f3', title: 'Cultural Programs', description: 'Celebrate diversity with various cultural events, arts, and traditions.', imageUrl: aboutImg }
+    { _id: 'f1', title: 'Yoga and Mindfulness Programs', description: 'Enhance your physical and mental well-being with our expert-led yoga and mindfulness sessions.', imageUrl: '' },
+    { _id: 'f2', title: 'Environmental Programs', description: 'Engage in sustainability initiatives and learn about environmental conservation.', imageUrl: '' },
+    { _id: 'f3', title: 'Cultural Programs', description: 'Celebrate diversity with various cultural events, arts, and traditions.', imageUrl: '' }
   ];
 
-  const headerImage = programs[0]?.imageUrl || aboutImg;
+  const getProgramImage = (program, index) => {
+    if (program?.imageUrl) return program.imageUrl;
+    if (campusPool.length > 0) return campusPool[index % campusPool.length];
+    return aboutImg;
+  };
+
+  const headerImage = getProgramImage(programs[0], 0);
 
   useEffect(() => {
     const fetchPrograms = async () => {
       try {
-        const { data } = await api.get('/programs');
+        const [{ data: programData }, { data: galleryData }] = await Promise.all([
+          api.get('/programs'),
+          api.get('/gallery'),
+        ]);
+
+        const campusImages = (galleryData || [])
+          .filter((item) => item.mediaType === 'image')
+          .filter((item) => (item.category || '').toLowerCase() === 'campus')
+          .map((item) => item.imageUrl)
+          .filter(Boolean);
+
+        setCampusPool(campusImages);
+
         // Combine API programs with fallbacks
-        const combined = [...(data || []), ...fallbackPrograms];
+        const combined = [...(programData || []), ...fallbackPrograms];
         setPrograms(combined);
       } catch (error) {
         console.error('Error fetching programs:', error);
         setPrograms(fallbackPrograms);
+        setCampusPool([]);
       } finally {
         setLoading(false);
       }
@@ -81,12 +101,13 @@ const Programs = () => {
                 <div className="relative h-48 overflow-hidden">
                   <div className="absolute inset-0 bg-blue-900/20 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
                   <img 
-                    src={program.imageUrl} 
+                    src={getProgramImage(program, index)} 
                     alt={program.title} 
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
                     onError={(e) => {
                       e.currentTarget.onerror = null;
-                      e.currentTarget.src = aboutImg;
+                      const fallback = campusPool.length > 0 ? campusPool[index % campusPool.length] : aboutImg;
+                      e.currentTarget.src = fallback;
                     }}
                   />
                   {/* Decorative corner */}
