@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaGraduationCap, FaSpinner } from 'react-icons/fa';
 import api from '../services/api';
+import aboutImg from '../assets/about.jpeg';
 
 const Programs = () => {
   const [programs, setPrograms] = useState([]);
@@ -8,12 +9,12 @@ const Programs = () => {
 
   // Fallback Data
   const fallbackPrograms = [
-    { _id: 'f1', title: 'Yoga and Mindfulness Programs', description: 'Enhance your physical and mental well-being with our expert-led yoga and mindfulness sessions.', imageUrl: 'https://via.placeholder.com/640x420?text=Yoga+Program' },
-    { _id: 'f2', title: 'Environmental Programs', description: 'Engage in sustainability initiatives and learn about environmental conservation.', imageUrl: 'https://via.placeholder.com/640x420?text=Environmental+Program' },
-    { _id: 'f3', title: 'Cultural Programs', description: 'Celebrate diversity with various cultural events, arts, and traditions.', imageUrl: 'https://via.placeholder.com/640x420?text=Cultural+Program' }
+    { _id: 'f1', title: 'Yoga and Mindfulness Programs', description: 'Enhance your physical and mental well-being with our expert-led yoga and mindfulness sessions.', imageUrl: aboutImg },
+    { _id: 'f2', title: 'Environmental Programs', description: 'Engage in sustainability initiatives and learn about environmental conservation.', imageUrl: aboutImg },
+    { _id: 'f3', title: 'Cultural Programs', description: 'Celebrate diversity with various cultural events, arts, and traditions.', imageUrl: aboutImg }
   ];
 
-  const headerImage = programs[0]?.imageUrl || 'https://via.placeholder.com/1600x900?text=Programs';
+  const headerImage = programs[0]?.imageUrl || aboutImg;
 
   useEffect(() => {
     const fetchPrograms = async () => {
@@ -83,6 +84,10 @@ const Programs = () => {
                     src={program.imageUrl} 
                     alt={program.title} 
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = aboutImg;
+                    }}
                   />
                   {/* Decorative corner */}
                   <div className="absolute top-0 right-0 bg-yellow-400 text-blue-900 text-xs font-bold px-4 py-2 rounded-bl-2xl z-20 shadow-md">

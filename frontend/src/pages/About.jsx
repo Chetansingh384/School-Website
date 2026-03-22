@@ -33,11 +33,13 @@ const About = () => {
     const fetchMedia = async () => {
       try {
         const { data } = await api.get('/gallery');
-        const liveImages = (data || [])
+        const galleryItems = data || [];
+        const liveImages = galleryItems
           .filter(item => item.mediaType !== 'video')
+          .filter(item => (item.category || '').toLowerCase() === 'campus')
           .map(item => item.imageUrl)
           .filter(Boolean);
-        const liveVideos = data.filter(item => item.mediaType === 'video');
+        const liveVideos = galleryItems.filter(item => item.mediaType === 'video');
 
         if (liveImages.length > 0) {
           const checks = await Promise.all(liveImages.slice(0, 10).map((url) => isImageReachable(url)));
