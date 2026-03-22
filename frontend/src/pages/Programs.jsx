@@ -35,6 +35,7 @@ const Programs = () => {
   };
 
   const headerImage =
+    campusBySourceFile['campus1.jpeg'] ||
     campusBySourceFile['campus11.jpeg'] ||
     campusBySourceFile['campus10.jpeg'] ||
     aboutImg;
